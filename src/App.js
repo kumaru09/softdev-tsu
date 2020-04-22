@@ -7,6 +7,7 @@ import Navbar from './component/Navbar'
 import { history } from './helpers/history'
 import { createMuiTheme } from '@material-ui/core'
 import { ThemeProvider } from '@material-ui/core/styles'
+import Register from './pages/Register'
 
 const App = () => {
   const theme = createMuiTheme({
@@ -34,6 +35,7 @@ const App = () => {
       <Switch>
         <Route exact path="/" component={HomePage} />
         <Route exact path="/login" component={LoginPage} />
+        <Route exact path="/register" component={Register} />
         <Redirect to="/" />
       </Switch>
     </Router>
