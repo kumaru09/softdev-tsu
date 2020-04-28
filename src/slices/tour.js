@@ -36,7 +36,7 @@ export function fetchTour(id) {
 
     Axios.get(`http://api.sdp.19991999.xyz/tours/${id}`)
     .then(res => {
-      dispatch(getTourSuccess(res))
+      dispatch(getTourSuccess(res.data))
     })
     .catch(err => {
       console.log(err)

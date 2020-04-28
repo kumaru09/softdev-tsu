@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { history } from '../helpers/history'
+import Axios from 'axios'
 
 let user = JSON.parse(localStorage.getItem('user'))
 
@@ -39,24 +40,18 @@ export default loginSlice.reducer
 export function login(username, password) {
     return async dispatch => {
         dispatch(LOGIN_REQUEST(username))
-        let config = {
-            method: 'POST',
-            headers: { "Content-Type":'application/x-www-form-urlencoded', },
-            body: `username=${ username }&password=${ password }`
-        }
-        try {
-            const response = await fetch('http://localhost:5000/login',config)
-            const user = await response.json()
 
-            console.log(JSON.stringify(user))
-            localStorage.setItem('user',JSON.stringify(user))
-            dispatch(LOGIN_SUCCESS(user))
+        Axios.post('http://api.sdp.19991999.xyz/login',{username, password})
+        .then(res => {
+            console.log(JSON.stringify(res.data))
+            localStorage.setItem('user',JSON.stringify(res.data))
+            dispatch(LOGIN_SUCCESS(res.data))
             history.push('/')
-        }
-        catch(err) {
+        })
+        .catch(err => {
             console.log(err)
             dispatch(LOGIN_FAILURE())
-        }
+        })
     }
 }
 

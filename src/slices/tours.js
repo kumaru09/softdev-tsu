@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { getTourSuccess } from './tour'
 import Axios from 'axios'
 
 export const initialState = {
@@ -28,16 +27,16 @@ const toursSlice = createSlice({
 })
 
 export const { getTours, getToursSuccess, getToursFailure } = toursSlice.actions
-export const postsSelector = state => state.posts
+export const toursSelector = state => state.tours
 export default toursSlice.reducer
 
 export function fetchTours() {
   return async dispatch => {
     dispatch(getTours())
 
-    Axios.get('http://api.sdp.19991999.xyz/tours/')
+    Axios.get('http://api.sdp.19991999.xyz/tours/',{search: ""})
     .then(res => {
-        dispatch(getTourSuccess(res))
+        dispatch(getToursSuccess(res.data))
     })
     .catch(err => {
         console.log(err)

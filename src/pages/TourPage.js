@@ -15,7 +15,6 @@ const useStyles = makeStyles((theme) => ({
 const TourPage = ({ match }) => {
     const classes = useStyles()
     const dispatch = useDispatch()
-    const { tour, loading: tourLoading, hasErrors: tourHasErrors } = useSelector(tourSelector)
 
     useEffect(() => {
         const { id } = match.params
@@ -23,10 +22,12 @@ const TourPage = ({ match }) => {
         dispatch(fetchTour(id))
     }, [dispatch, match])
 
+    const { tour, loading, hasError } = useSelector(tourSelector)
+
     return (
         <Container>
             <div style={{marginTop: "1.5rem"}}>
-                <Typography variant="h3" gutterBottom>Kitten</Typography>
+                <Typography variant="h3" gutterBottom>{tour.name}</Typography>
             </div>
             <div>
                 <Paper>
@@ -36,15 +37,15 @@ const TourPage = ({ match }) => {
                         <Grid container direction="column">
                             <Grid item>
                                 <Typography variant="subtitle1">{"เวลาเดินทาง:"}</Typography>
-                                <Typography variant="subtitle1">{"ตั้งแต่"}</Typography>
-                                <Typography variant="subtitle1" gutterBottom>{"ถึง"}</Typography>
+                                <Typography variant="subtitle1">{"ตั้งแต่"}{tour.first_day}</Typography>
+                                <Typography variant="subtitle1" gutterBottom>{"ถึง"}{tour.last_day}</Typography>
                             </Grid>
                             <Grid item style={{marginBottom: "1rem"}}>
                                 <Typography variant="subtitle1">{"สถานที่:"}</Typography>
-                                <Typography variant="subtitle1" gutterBottom>{"คาเฟ่แมว เมี๊ยวๆเลิฟเวอร์ สยาม คาเฟ่แมว เมี๊ยวๆเลิฟเวอร์ สยามคาเฟ่แมว เมี๊ยวๆเลิฟเวอร์ สยามคาเฟ่แมว เมี๊ยวๆเลิฟเวอร์ สยาม"}</Typography>
+                                <Typography variant="subtitle1" gutterBottom>{tour.list}</Typography>
                             </Grid>
                             <Grid item style={{marginLeft: "auto", marginRight: "1rem", marginBottom: "0.25rem"}}>
-                                <Button>FREE</Button>
+                                <Button>{tour.price}{""}</Button>
                                 <Button color="primary" variant="contained">เข้าร่วม</Button>
                             </Grid>
                         </Grid>
@@ -55,11 +56,11 @@ const TourPage = ({ match }) => {
             <section>
                 <Typography variant="h3" gutterBottom>Description</Typography>
                 <Grid container>
-                    
+                    {tour.description}
                 </Grid>
             </section>
             <section>
-                <Typography></Typography>
+                <Typography>ไกด์: {tour.g_name}{" "}{tour.g_surname}</Typography>
             </section>
         </Container>
     )
