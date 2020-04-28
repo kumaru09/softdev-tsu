@@ -29,9 +29,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 
-const Information = ({ formProps: { register, errors }, handleInputChange, account }) => {
+const Information = ({ formProps: { register, errors }, handleInputChange, values }) => {
     const classes = useStyles();
-    const { firstName, lastName, idCardNumber, phoneNumber, address } = account
+    const { firstName, lastName, idCardNumber, phoneNumber, address } = values
 
     return (
         <Fragment>
@@ -52,7 +52,7 @@ const Information = ({ formProps: { register, errors }, handleInputChange, accou
                             variant="outlined"
                             inputRef={register}
                             error={!!errors.firstName}
-                            value={firstName}
+                            defaultValue={firstName}
                             onChange={handleInputChange}
                         />
                         {errors.firstName && <p className={classes.errorMessage}>{errors.firstName.message}</p>}
@@ -68,7 +68,7 @@ const Information = ({ formProps: { register, errors }, handleInputChange, accou
                             variant="outlined"
                             inputRef={register}
                             error={!!errors.lastName}
-                            value={lastName}
+                            defaultValue={lastName}
                             onChange={handleInputChange}
                         />
                         {errors.lastName && <p className={classes.errorMessage}>{errors.lastName.message}</p>}
@@ -88,7 +88,7 @@ const Information = ({ formProps: { register, errors }, handleInputChange, accou
                                 variant="outlined"
                                 inputRef={register}
                                 error={!!errors.idCardNumber}
-                                value={idCardNumber}
+                                defaultValue={idCardNumber}
                                 onChange={handleInputChange}
                             />
                             {errors.idCardNumber && <p className={classes.errorMessage}>{errors.idCardNumber.message}</p>}
@@ -104,7 +104,7 @@ const Information = ({ formProps: { register, errors }, handleInputChange, accou
                                 variant="outlined"
                                 inputRef={register}
                                 error={!!errors.phoneNumber}
-                                value={phoneNumber}
+                                defaultValue={phoneNumber}
                                 onChange={handleInputChange}
                             />
                             {errors.phoneNumber && <p className={classes.errorMessage}>{errors.phoneNumber.message}</p>}
@@ -125,7 +125,7 @@ const Information = ({ formProps: { register, errors }, handleInputChange, accou
                                 rows={4}
                                 inputRef={register}
                                 error={!!errors.address}
-                                value={address}
+                                defaultValue={address}
                                 onChange={handleInputChange}
                             />
                             {errors.address && <p className={classes.errorMessage}>{errors.address.message}</p>}

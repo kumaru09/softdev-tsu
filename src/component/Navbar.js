@@ -1,7 +1,8 @@
 import React from 'react'
-import { NavLink, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { logout } from '../slices/login'
+import { AppBar, Toolbar, Button, Typography } from '@material-ui/core'
 
 const Navbar = () => {
     const isAuth = useSelector(state => state.login.isAuth)
@@ -9,31 +10,15 @@ const Navbar = () => {
     const dispatch = useDispatch()
 
     return (
-        <nav className="navbar navbar-expand-md navbar-light bg-light">
-        <div className="container">
-            <NavLink exact to="/" className="navbar-brand">Pi-theiyw</NavLink>
-            <button type="button" className="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-                <span className="navbar-toggler-icon"></span>
-            </button>
-                <div className="collapse navbar-collapse" id="navbarCollapse">
-                    <ul className="navbar-nav ml-auto">
-                        { isAuth && <li className="nav-item"><Link to="/profile" className="nav-link"><i className="material-icons">face</i></Link></li> }
-                        { isAuth && <li className="dropdown nav-item">
-                            <a href="javasrcipt:;" className="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">
-                                <i className="material-icons">settings</i><b className="caret"></b>
-                            </a>
-                            <div className="dropdown-menu dropdown-menu-right">
-                                <h6 className="dropdown-header">{ user.name }</h6>
-                            </div>
-                        </li>}
-                        { !isAuth && <li className="nav-item"><Link to="/register" className="nav-link">Signup</Link></li>}
-                        { !isAuth ? <li className="nav-item"><Link to="/login" className="nav-link">Login</Link></li>
-                        : <li className="nav-item"><Link to="/" className="nav-link" onClick={() =>{dispatch(logout())}}>
-                        Logout</Link></li> }
-                    </ul>
-                </div>
-                </div>
-        </nav>
+        <AppBar position="static">
+            <Toolbar>
+                <Typography><Link exact to="/">Pi-theiyw</Link></Typography>
+                    { !isAuth && <Button color="inherit"><Link to="/register" className="nav-link">Signup</Link></Button>}
+                    { !isAuth ? <Button color="inherit"><Link to="/login" className="nav-link">Login</Link></Button>
+                        : <Button color="inherit"><Link to="/" className="nav-link" onClick={() =>{dispatch(logout())}}>
+                        Logout</Link></Button>}
+            </Toolbar>
+        </AppBar>
     )
 }
 

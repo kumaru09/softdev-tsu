@@ -19,11 +19,11 @@ const regisSlice = createSlice({
 export const {REGISTER_REQUEST, REGISTER_SUCCESS, REGISTER_FAILURE} = regisSlice.actions
 export default regisSlice.reducer
 
-export function register(user) {
+export function register(members) {
     return async dispatch => {
-        dispatch(REGISTER_REQUEST(user))
+        dispatch(REGISTER_REQUEST(members))
 
-        Axios.post('http://localhost:5000/register',{user})
+        Axios.post('http://api.sdp.19991999.xyz/members/',members)
         .then(res => {
             dispatch(REGISTER_SUCCESS())
             history.push('/')

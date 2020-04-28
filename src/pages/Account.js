@@ -28,9 +28,9 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export default function Account({ formProps: { register, errors }, data }) {
+export default function Account({ formProps: { register, errors }, values }) {
     const classes = useStyles();
-    const { email, password, confirmPassword } = data[0]
+    const { email, password, confirmPassword } = values
 
     return (
         <Fragment>
