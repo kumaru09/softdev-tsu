@@ -9,6 +9,8 @@ import { createMuiTheme } from '@material-ui/core'
 import { ThemeProvider } from '@material-ui/core/styles'
 import Register from './pages/Register'
 import TourPage from './pages/TourPage'
+import { PrivateRoute } from './component/PrivateRoute'
+import TranscriptPage from './pages/TranscriptPage'
 
 const App = () => {
   const theme = createMuiTheme({
@@ -38,6 +40,7 @@ const App = () => {
         <Route exact path="/login" component={LoginPage} />
         <Route exact path="/register" component={Register} />
         <Route exact path="/tours/:id" component={TourPage} />
+        <PrivateRoute exact path="/transcript" component={TranscriptPage} />
         <Redirect to="/" />
       </Switch>
     </Router>
