@@ -3,79 +3,98 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../slices/login";
 import { Link } from "react-router-dom";
+import { Container, Typography, TextField, Button, Grid, makeStyles } from "@material-ui/core";
+
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    marginTop: theme.spacing(8),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+  link: {
+    textDecoration: 'none'
+  }
+}));
+
 
 const LoginPage = () => {
-  const initialFromState = { username: "", password: "" };
-  const [input, setInput] = useState(initialFromState);
-  const [submitted, setSubmitted] = useState(false);
-  const loggingin = useSelector((state) => state.login.loggingin);
+  const classes = useStyles()
+  const initialFromState = { username: "", password: "" }
+  const [input, setInput] = useState(initialFromState)
+  const [submitted, setSubmitted] = useState(false)
+  const loggingin = useSelector((state) => state.login.loggingin)
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setInput({ ...input, [name]: value });
-  };
+    const { name, value } = event.target
+    setInput({ ...input, [name]: value })
+  }
 
   const handleSumbit = (event) => {
-    event.preventDefault();
+    event.preventDefault()
 
-    setSubmitted(true);
+    setSubmitted(true)
     if (input.username && input.password)
-      dispatch(login(input.username, input.password));
-  };
+      dispatch(login(input.username, input.password))
+  }
 
   return (
-    <div className="container">
-      <div className="row">
-        <div className="col-md-6 offset-md-3">
-        <h3>Login</h3>
-          <form onSubmit={handleSumbit}>
-            <div className="form-group">
-              <label>Username</label>
-              <input
-                type="text"
-                className={
-                  "form-control" +
-                  (submitted && !input.username ? " is-invalid" : "")
-                }
-                name="username"
-                value={input.username}
-                onChange={handleInputChange}
-              />
-              {submitted && !input.username && (
-                <div className="invalid-feedback">Username is required</div>
-              )}
-            </div>
-            <div className="form-group">
-              <label>Password</label>
-              <input
-                type="text"
-                className={
-                  "form-control" +
-                  (submitted && !input.password ? " is-invalid" : "")
-                }
-                name="password"
-                value={input.password}
-                onChange={handleInputChange}
-              />
-              {submitted && !input.password && (
-                <div className="invalid-feedback">Password is required</div>
-              )}
-            </div>
-            <button className="btn btn-primary" type="submit">
-              {loggingin && (
-                <span className="spinner-border spinner-border-sm"></span>
-              )}
+    <Container component="main" maxWidth="xs">
+    <div className={classes.paper}>
+      <Typography variant="h4" gutterBottom>Login</Typography>
+        <form onSubmit={handleSumbit} className={classes.form}>
+            <TextField 
+              fullWidth
+              required
+              variant="outlined"
+              margin="normal"
+              id="username"
+              label="username"
+            />
+            <Grid item xs>
+            <TextField
+              required
+              fullWidth
+              variant="outlined"
+              type="password"
+              margin="normal"
+              id="password"
+              label="password"
+            />
+            </Grid>
+            <Button
+              type="sumbit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
               Login
-            </button>
-            <Link to="/register" className="btn btn-link">
-              Register
-            </Link>
-          </form>
-        </div>
+            </Button>
+            <Grid container>
+            <Grid item xs>
+              <Link href="#" variant="body2" style={{textDecoration : 'none'}}>
+                Forgot password?
+              </Link>
+            </Grid>
+            <Grid item>
+              <Link to="/register" variant="body2" style={{textDecoration : 'none'}}>
+                {"Don't have an account? Sign Up"}
+              </Link>
+            </Grid>
+          </Grid>
+        </form>
       </div>
-    </div>
+    </Container>
   );
 };
 
