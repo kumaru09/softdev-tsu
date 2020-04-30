@@ -1,8 +1,9 @@
 import React from 'react'
-import { Paper, Grid, Typography } from '@material-ui/core'
+import { Paper, Grid, Typography, CardActionArea } from '@material-ui/core'
 
 export const Tour = ({ tour }) => (
     <Grid item xs>
+    <CardActionArea component="a" href={`/tours/${tour.id}`}>
     <Paper>
         <Grid container wrap="nowrap" direction="column">
             <Grid item xs>
@@ -16,5 +17,6 @@ export const Tour = ({ tour }) => (
             </Grid>
         </Grid>
     </Paper>
+    </CardActionArea>
     </Grid>
 )

@@ -28,7 +28,21 @@ const App = () => {
         '"Segoe UI Emoji"',
         '"Segoe UI Symbol"',
       ].join(','),
-    }
+    },
+    palette: {
+      primary: {
+        light: '#51d1e1',
+        main: '#26c6da',
+        dark: '#1a8a98',
+        contrastText: '#000'
+      },
+      secondary: {
+        light: '#ef6694',
+        main: '#ec407a',
+        dark: '#a52c55',
+        contrastText: '#fff'
+      },
+    },
   })
 
   return (

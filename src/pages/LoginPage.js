@@ -72,7 +72,7 @@ const LoginPage = () => {
             />
             </Grid>
             <Button
-              type="sumbit"
+              type="submit"
               fullWidth
               variant="contained"
               color="primary"
@@ -82,7 +82,7 @@ const LoginPage = () => {
             </Button>
             <Grid container>
             <Grid item xs>
-              <Link href="#" variant="body2" style={{textDecoration : 'none'}}>
+              <Link to="/" variant="body2" style={{textDecoration : 'none'}}>
                 Forgot password?
               </Link>
             </Grid>

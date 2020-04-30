@@ -1,5 +1,4 @@
 import React from 'react'
-import { Form } from 'formik'
 import { Grid, Typography, Container } from '@material-ui/core'
 
 const TranscriptPage = () => {

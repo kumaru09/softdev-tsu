@@ -18,9 +18,6 @@ const HomePage = () => {
 
   return (
     <div>
-      <Paper>
-        <img src="https://source.unsplash.com/random" alt="..." />
-      </Paper>
       <Container maxWidth="md">
         <div style={{marginTop: "3rem"}}>
           <Typography variant="h4" gutterBottom>

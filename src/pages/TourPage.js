@@ -2,6 +2,8 @@ import React, { useEffect } from 'react'
 import { Container, Typography, Grid, makeStyles, Paper, Button } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
 import { tourSelector, fetchTour } from '../slices/tour'
+import moment from 'moment'
+import 'moment/locale/th'
 
 const useStyles = makeStyles((theme) => ({
     img: {
@@ -37,8 +39,8 @@ const TourPage = ({ match }) => {
                         <Grid container direction="column">
                             <Grid item>
                                 <Typography variant="subtitle1">{"เวลาเดินทาง:"}</Typography>
-                                <Typography variant="subtitle1">{"ตั้งแต่"}{tour.first_day}</Typography>
-                                <Typography variant="subtitle1" gutterBottom>{"ถึง"}{tour.last_day}</Typography>
+                                <Typography variant="subtitle1">{"ตั้งแต่"}{moment(tour.first_day).format('LLLL')}</Typography>
+                                <Typography variant="subtitle1" gutterBottom>{"ถึง"}{moment(tour.last_day).format('LLLL')}</Typography>
                             </Grid>
                             <Grid item style={{marginBottom: "1rem"}}>
                                 <Typography variant="subtitle1">{"สถานที่:"}</Typography>
