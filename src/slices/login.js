@@ -38,10 +38,11 @@ export const usersSelector = state => state.login
 export default loginSlice.reducer
 
 export function login(username, password) {
+
     return async dispatch => {
         dispatch(LOGIN_REQUEST(username))
 
-        Axios.post('http://api.sdp.19991999.xyz/login',{username, password})
+        Axios.post('http://api.sdp.19991999.xyz/login',{username: username, password: password})
         .then(res => {
             console.log(JSON.stringify(res.data))
             localStorage.setItem('user',JSON.stringify(res.data))

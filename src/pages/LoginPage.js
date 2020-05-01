@@ -19,9 +19,6 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
-  link: {
-    textDecoration: 'none'
-  }
 }));
 
 
@@ -59,6 +56,9 @@ const LoginPage = () => {
               margin="normal"
               id="username"
               label="username"
+              name="username"
+              onChange={handleInputChange}
+              defaultValue={input.username}
             />
             <Grid item xs>
             <TextField
@@ -69,6 +69,9 @@ const LoginPage = () => {
               margin="normal"
               id="password"
               label="password"
+              name="password"
+              onChange={handleInputChange}
+              defaultValue={input.password}
             />
             </Grid>
             <Button

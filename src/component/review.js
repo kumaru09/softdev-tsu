@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
 
 const classes = useStyles()
 
-export const review = ({ review }) => (
+export const Review = ({ review }) => (
     <Paper className={classes.paper}>
         <Grid container>
             <Grid item>
