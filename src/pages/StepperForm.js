@@ -29,8 +29,8 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const checkCharacterOnly = /[A-Za-z]+$/;
-const checkNumberOnly = /[0-9]+$/;
+const checkCharacterOnly = /^[A-Za-z]+$/;
+const checkNumberOnly = /^[0-9]+$/;
 
 const informationSchema = yup.object().shape({
     firstName: yup
