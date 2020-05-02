@@ -277,7 +277,7 @@ const TourForm = (props) => {
                     <KeyboardDatePicker
                       disableToolbar
                       variant="inline"
-                      format="MM/dd/yyy"
+                      format="MM/dd/yyyy"
                       margin="normal"
                       id="startDate"
                       name="startDate"
@@ -319,7 +319,7 @@ const TourForm = (props) => {
                     <KeyboardDatePicker
                       disableToolbar
                       variant="inline"
-                      format="MM/dd/yyy"
+                      format="MM/dd/yyyy"
                       margin="normal"
                       id="endDate"
                       name="endDate"
@@ -430,7 +430,7 @@ const form = withFormik({
       .max(12, "Please enter 10 digit"),
     category: yup.string().required("This field is required"),
     bank: yup.string().required("This field is required"),
-    startDate: yup.date().required("required"),
+    startDate: yup.date().required("This field is required"),
     endDate: yup.date().required("This field is required"),
     picture: yup.string().required("This field is required"),
     destination: yup.string().required("This field is required"),
