@@ -354,6 +354,33 @@ const TourForm = (props) => {
                 />
               </Grid>
             </Grid>
+            <Grid container item xs={12} spacing={5}>
+              <Grid item xs={6}>
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <Grid container>
+                    <KeyboardTimePicker
+                      disableToolbar
+                      variant="inline"
+                      mask="__:__ _M"
+                      margin="normal"
+                      id="startTime"
+                      name="startTime"
+                      label="Start Time"
+                      className={classes.textField}
+                      value={values.startTime}
+                      onChange={(value) =>
+                        props.setFieldValue("startTime", value)
+                      }
+                      helperText={touched.startTime ? errors.startTime : ""}
+                      error={touched.startTime && Boolean(errors.startTime)}
+                      KeyboardButtonProps={{
+                        "aria-label": "change date",
+                      }}
+                    />
+                  </Grid>
+                </MuiPickersUtilsProvider>
+              </Grid>
+            </Grid>
             <Grid container justify="flex-end" item xs={12} spacing={5}>
               <Button
                 variant="contained"
@@ -386,6 +413,7 @@ const form = withFormik({
     accname,
     endDate,
     accno,
+    startTime,
   }) => {
     return {
       picture: picture || "",
@@ -401,6 +429,7 @@ const form = withFormik({
       accname: accname || "",
       endDate: endDate || null,
       accno: accno || "",
+      startTime: startTime || null,
     };
   },
   validationSchema: yup.object().shape({
@@ -434,6 +463,7 @@ const form = withFormik({
     endDate: yup.string().required("This field is required"),
     picture: yup.string().required("This field is required"),
     destination: yup.string().required("This field is required"),
+    startTime: yup.string().required("This field is required"),
   }),
 
   handleSubmit: (values, { setFieldValue, setSubmitting }) => {
