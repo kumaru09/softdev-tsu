@@ -1,6 +1,5 @@
 import React from 'react'
 import { Router, Switch, Route, Redirect } from 'react-router-dom'
-
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
 import Navbar from './component/Navbar'
@@ -12,6 +11,7 @@ import TourPage from './pages/TourPage'
 import { PrivateRoute } from './component/PrivateRoute'
 import TranscriptPage from './pages/TranscriptPage'
 import ToursPage from './pages/ToursPage'
+import TourForm from './pages/TourForm';
 
 const App = () => {
   const theme = createMuiTheme({
@@ -57,6 +57,7 @@ const App = () => {
         <Route exact path="/tours/:id" component={TourPage} />
         <Route exact path="/tours/" component={ToursPage} />
         <PrivateRoute exact path="/transcript" component={TranscriptPage} />
+        <PrivateRoute exact path="/create" component={TourForm}  />
         <Redirect to="/" />
       </Switch>
     </Router>
