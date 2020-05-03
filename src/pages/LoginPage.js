@@ -84,7 +84,7 @@ const LoginPage = () => {
               Login
             </Button>
             <Grid container>
-            <Grid item xs>
+            <Grid item md={5} xs={12}>
               <Link to="/" variant="body2" style={{textDecoration : 'none'}}>
                 Forgot password?
               </Link>

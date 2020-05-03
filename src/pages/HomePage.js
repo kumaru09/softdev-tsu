@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchTours, toursSelector, searchTours } from "../slices/tours";
 import { Tour } from "../component/Tour";
 import SearchIcon from "@material-ui/icons/Search";
+import { Link } from "react-router-dom";
 
 const useStyle = makeStyles((theme) => ({
   iconButton: {
@@ -36,7 +37,7 @@ const HomePage = () => {
   const [input, setInput] = useState('')
 
   useEffect(() => {
-    dispatch(fetchTours());
+    dispatch(searchTours());
   }, [dispatch]);
 
   const { tours, loading, hasError } = useSelector(toursSelector);
@@ -72,7 +73,7 @@ const HomePage = () => {
                 inputProps={{ "aria-label": "ค้นหาสถานที่" }}
                 onChange={(event) => {setInput(event.target.value)}}
               />
-              <Button color="primary" variant="contained" onClick={() => {dispatch(searchTours(input))}}>
+              <Button color="primary" variant="contained" component={Link} to={`/tours?search=${input}`}>
                 ค้นหา
               </Button>
             </Paper>

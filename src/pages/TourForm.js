@@ -2,7 +2,7 @@ import React from "react";
 import { withFormik } from "formik";
 import * as yup from "yup";
 import { makeStyles } from "@material-ui/core/styles";
-import { TextField, Grid, MenuItem, Button } from "@material-ui/core";
+import { TextField, Grid, MenuItem, Button, Container } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import {
   MuiPickersUtilsProvider,
@@ -103,8 +103,9 @@ const TourForm = (props) => {
   } = props;
 
   return (
+    <Container maxWidth="md">
     <div classes={classes.root}>
-      <Grid container direction="row" spacing={0}>
+      <Grid container direction="row" spacing={1}>
         <form onSubmit={handleSubmit}>
           <TextField
             id="picture"
@@ -381,13 +382,39 @@ const TourForm = (props) => {
                   </Grid>
                 </MuiPickersUtilsProvider>
               </Grid>
+              <Grid item xs={6}>
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <Grid container>
+                    <KeyboardTimePicker
+                      disableToolbar
+                      variant="inline"
+                      mask="__:__ _M"
+                      margin="normal"
+                      id="endTime"
+                      name="endTime"
+                      label="End Time"
+                      className={classes.textField}
+                      value={values.endTime}
+                      onChange={(value) =>
+                        props.setFieldValue("endTime", value)
+                      }
+                      helperText={touched.endTime ? errors.endTime : ""}
+                      error={touched.endTime && Boolean(errors.endTime)}
+                      KeyboardButtonProps={{
+                        "aria-label": "change date",
+                      }}
+                    />
+                  </Grid>
+                </MuiPickersUtilsProvider>
+              </Grid>
             </Grid>
-            <Grid container justify="flex-end" item xs={12} spacing={5}>
+            <Grid container item xs={12}>
               <Button
                 variant="contained"
                 type="submit"
                 disabled={isSubmitting}
                 color="primary"
+                fullWidth
               >
                 Create trip
               </Button>
@@ -396,6 +423,7 @@ const TourForm = (props) => {
         </form>
       </Grid>
     </div>
+    </Container>
   );
 };
 
@@ -415,6 +443,7 @@ const form = withFormik({
     endDate,
     accno,
     startTime,
+    endTime,
   }) => {
     return {
       picture: picture || "",
@@ -431,6 +460,7 @@ const form = withFormik({
       endDate: endDate || null,
       accno: accno || "",
       startTime: startTime || null,
+      endTime: endTime || null,
     };
   },
   validationSchema: yup.object().shape({
@@ -465,6 +495,7 @@ const form = withFormik({
     picture: yup.string().required("This field is required"),
     destination: yup.string().required("This field is required"),
     startTime: yup.string().required("This field is required"),
+    endTime: yup.string().required("This field is required"),
   }),
 
   handleSubmit: (values, { setFieldValue, setSubmitting }) => {
