@@ -31,30 +31,14 @@ export const { getTours, getToursSuccess, getToursFailure } = toursSlice.actions
 export const toursSelector = state => state.tours
 export default toursSlice.reducer
 
-export function fetchTours() {
-  return async dispatch => {
-    dispatch(getTours())
-
-    Axios.get('http://api.sdp.19991999.xyz/tours/',{search: "1"})
-    .then(res => {
-        dispatch(getToursSuccess(res.data))
-    })
-    .catch(err => {
-        console.log(err)
-        dispatch(getToursFailure())
-    })
-  }
-}
-
 export function searchTours(input) {
   return async dispatch => {
     dispatch(getTours())
-    console.log(input)
-    Axios.get('http://api.sdp.19991999.xyz/tours/',{search: 'test'})
+
+    Axios.get('http://api.sdp.19991999.xyz/tours/',{ params: {search: input} })
     .then(res => {
         console.log(res.data)
         dispatch(getToursSuccess(res.data))
-        history.push('/tours')
     })
     .catch(err => {
         console.log(err)
