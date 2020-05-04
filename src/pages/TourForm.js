@@ -1,45 +1,64 @@
 import React from "react";
-import { withFormik } from "formik";
 import * as yup from "yup";
 import { makeStyles } from "@material-ui/core/styles";
-import { TextField, Grid, MenuItem, Button, Container } from "@material-ui/core";
+import {
+  TextField,
+  Grid,
+  MenuItem,
+  Button,
+  Container,
+  Paper,
+  Select,
+  FormControl,
+  InputLabel,
+  Input,
+  Chip,
+  FormControlLabel,
+  Checkbox,
+} from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import {
   MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-  KeyboardTimePicker
+  KeyboardDateTimePicker,
 } from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
+import { withFormik, Field } from "formik";
+import moment from "moment";
+import "moment/locale/th";
+import MomentUtils from "@date-io/moment";
+import { connect } from "react-redux";
+import { addTour } from "../slices/addtour";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    margin: " 0 5rem",
-    padding: "0 7rem",
-    [theme.breakpoints.down("xs")]: {
-      padding: "0",
-    },
-    [theme.breakpoints.down("md")]: {
-      padding: "0",
-    },
-    marginTop: "auto",
-  },
-  textField: {
-    width: "90%",
-    [theme.breakpoints.down("xs")]: {
-      width: "90%",
-    },
-  },
-  autoComplete: {
-    width: "90%",
-    [theme.breakpoints.down("xs")]: {
-      width: "90%",
-    },
-  },
-
   errorMessage: {
     color: "red",
     fontSize: "1.0rem",
     marginTop: "0.2rem",
+  },
+  paper: {
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(3),
+    padding: theme.spacing(2),
+    [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
+      marginTop: theme.spacing(6),
+      marginBottom: theme.spacing(6),
+      padding: theme.spacing(3),
+    },
+  },
+  logo: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: "0.5rem",
+    color: "#745c97",
+    fontWeight: "bold",
+    letterSpacing: "0.5rem",
+  },
+  border: {
+    border: "0.15rem solid #26c6da",
+    borderRadius: "2px",
+    padding: "2%",
+    width: "25rem",
+    textAlign: "center",
   },
 }));
 
@@ -61,15 +80,15 @@ const tourCategory = [
 const bankCategory = [
   {
     value: "kasikorn",
-    label: "Kasikorn",
+    label: "ธนาคารกสิกร",
   },
   {
     value: "SCB",
-    label: "SCB",
+    label: "ธนาคารไทยพาณิชย์",
   },
   {
     value: "krungthai",
-    label: "Krungthai",
+    label: "ธนาคารกรุงไทย",
   },
 ];
 const topdestination = [
@@ -89,6 +108,8 @@ const topdestination = [
 
 const checkNumberOnly = /[0-9]+$/;
 
+moment.locale("th");
+
 const TourForm = (props) => {
   const classes = useStyles();
   const {
@@ -104,325 +125,284 @@ const TourForm = (props) => {
 
   return (
     <Container maxWidth="md">
-    <div classes={classes.root}>
-      <Grid container direction="row" spacing={1}>
-        <form onSubmit={handleSubmit}>
-          <TextField
-            id="picture"
-            placeholder="Picture:"
-            type="file"
-            accept="image/*"
-            margin="normal"
-            variant="outlined"
-            values={values.picture}
-            onChange={handleChange}
-            helperText={touched.picture ? errors.picture : ""}
-            error={touched.picture && Boolean(errors.picture)}
-          />
-          <Grid container justify="center" spacing={3}>
-            <Grid container item xs={12} spacing={5}>
-              <Grid item xs={6}>
-                <TextField
-                  id="tripname"
-                  label="Tripname"
-                  className={classes.textField}
-                  value={values.tripname}
+      <Paper className={classes.paper}>
+        <Grid container spacing={3}>
+          <Grid item md={12} xs={12}>
+            <div className={classes.logo}>
+              <div className={classes.border}>CREATE NEW TOUR</div>
+            </div>
+          </Grid>
+          <Grid item md={12} xs={12}>
+            <form onSubmit={handleSubmit}>
+              <Grid container spacing={3}>
+                <Grid item xs={12}>
+                  <Input
+                    id="picture"
+                    name="picture"
+                    placeholder="Picture:"
+                    type="file"
+                    variant="outlined"
+                    onChange={(e) => {props.setFieldValue("picture", e.currentTarget.files[0])}}
+                    error={touched.picture && errors.picture ? true : false}
+                  />
+                  {errors.picture && touched.picture && (
+                    <p className={classes.errorMessage}>{errors.picture}</p>
+                  )}
+                </Grid>
+                <Grid item xs={12} md={8}>
+                  <TextField
+                    id="tourname"
+                    name="tourname"
+                    label="ชื่อทัวร์"
+                    value={values.tourname}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  helperText={touched.tripname ? errors.tripname : ""}
-                  error={touched.tripname && Boolean(errors.tripname)}
-                  margin="normal"
-                  variant="outlined"
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  id="guidename"
-                  label="Guidename"
-                  className={classes.textField}
-                  value={values.guidename}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  margin="normal"
-                  variant="outlined"
-                  helperText={touched.guidename ? errors.guidename : ""}
-                  error={touched.guidename && Boolean(errors.guidename)}
-                />
-              </Grid>
-            </Grid>
-            <Grid container item xs={12} spacing={5}>
-              <Grid item xs={6}>
-                <TextField
-                  select
-                  id="category"
-                  label="Category:"
-                  values={values.category}
-                  onChange={handleChange("category")}
-                  helperText={touched.category ? errors.category : ""}
-                  error={touched.category && Boolean(errors.category)}
-                  variant="outlined"
-                  helperText={"Please select category"}
-                >
-                  {tourCategory.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  id="description"
-                  label="Description"
-                  values={values.description}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  helperText={touched.description ? errors.description : ""}
-                  error={touched.description && Boolean(errors.description)}
-                  className={classes.textField}
-                  margin="normal"
-                  variant="outlined"
-                  multiline
-                  rowsMax={10}
-                />
-              </Grid>
-            </Grid>
-            <Grid container item xs={12} spacing={5}>
-              <Grid item xs={6}>
+                    error={touched.tourname && errors.tourname ? true : false}
+                    fullWidth
+                  />
+                  {errors.tourname && touched.tourname && (
+                    <p className={classes.errorMessage}>{errors.tourname}</p>
+                  )}
+                </Grid>
+                <Grid item xs={12} md={4}>
+                  <FormControl
+                    variant="outlined"
+                    fullWidth
+                    error={touched.category && errors.category ? true : false}
+                  >
+                    <InputLabel id="select-label">Category</InputLabel>
+                    <Select
+                      label="category"
+                      value={values.category}
+                      onChange={handleChange("category")}
+                    >
+                      {tourCategory.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    {touched.category && errors.category && (
+                      <p className={classes.errorMessage}>{errors.category}</p>
+                    )}
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12}>
                 <Autocomplete
-                  multiple
-                  name="destination"
-                  className={classes.autoComplete}
-                  values={values.destination}
-                  onChange={(value) =>
-                    props.setFieldValue("destination", value)
-                  }
-                  onBlur={handleBlur}
-                  helperText={touched.destination ? errors.destination : ""}
-                  error={touched.destinaton && Boolean(errors.destination)}
-                  options={topdestination}
-                  getOptionLabel={(option) => option.place}
-                  renderOption={(option, { selected }) => (
-                    <React.Fragment>{option.place}</React.Fragment>
+                    multiple
+                    fullWidth
+                    freeSolo
+                    defaultValue={[]}
+                    options={topdestination.map((option) => option.place)}
+                    onChange={( _,value) => props.setFieldValue("destination", value)}
+                    name="destination"
+                    renderTags={(value, getTagProps) =>
+                      value.map((option, index) => (
+                        <Chip
+                          variant="outlined"
+                          label={option}
+                          {...getTagProps({ index })}
+                        />
+                      ))
+                    }
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        id="destination"
+                        variant="standard"
+                        label="สถานที่"
+                        name="destination"
+                        placeholder="สถานที่"
+                        error={
+                          touched.destination && errors.destination
+                            ? true
+                            : false
+                        }
+                      />
+                    )}
+                  />
+                  {touched.destination && errors.destination && <p className={classes.errorMessage}>{errors.destination}</p>}
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <TextField
+                    id="person"
+                    label="จำนวนคนเข้าร่วม"
+                    value={values.person}
+                    onChange={handleChange}
+                    fullWidth
+                    error={touched.person && errors.person ? true : false}
+                  />
+                  {touched.person && errors.person && (
+                    <p className={classes.errorMessage}>{errors.person}</p>
                   )}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      id="destination"
-                      variant="standard"
-                      label="Destination"
-                      placeholder="destinations"
-                      values={values.destination}
-                      onChange={(value) =>
-                        props.setFieldValue("destination", value)
-                      }
-                      onBlur={handleBlur}
-                      helperText={touched.destination ? errors.destination : ""}
-                      error={touched.destinaton && Boolean(errors.destination)}
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Grid container alignItems="flex-end" spacing={1}>
+                    <Grid item>
+                    <FormControlLabel
+                      control={<Field 
+                        name="price"
+                        type="checkbox"
+                        component={Checkbox}
+                        value="0"
+                        color="primary"
+                      />}
+                      label="ฟรี"
                     />
+                    </Grid>
+                    <Grid item>
+                      <Field 
+                        name="free"
+                        type="checkbox"
+                        component={Checkbox}
+                        value="0"
+                        color="primary"
+                      />
+                    </Grid>
+                    <Grid item xs>
+                      <TextField
+                        fullWidth
+                        id="price"
+                        name="price"
+                        label="ค่ามัดจำ"
+                        value={values.price}
+                        onChange={handleChange}
+                        error={touched.price && errors.price ? true : false}
+                      />
+                    </Grid>
+                  </Grid>
+                  {touched.price && errors.price && (
+                        <p className={classes.errorMessage}>{errors.price}</p>
+                      )}
+                </Grid>
+                <Grid item xs={12} md={4}>
+                  <FormControl
+                    variant="outlined"
+                    fullWidth
+                    error={touched.bank && errors.bank ? true : false}
+                  >
+                    <InputLabel id="select-label-bank">ธนาคาร:</InputLabel>
+                    <Select
+                      id="bank"
+                      name="bank"
+                      label="ธนาคาร:"
+                      value={values.bank}
+                      onChange={handleChange("bank")}
+                    >
+                      {bankCategory.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    {touched.bank && errors.bank && (
+                      <p className={classes.errorMessage}>{errors.bank}</p>
+                    )}
+                  </FormControl>
+                </Grid>
+                <Grid item xs={12} md={4}>
+                  <TextField
+                    id="accno"
+                    name="accno"
+                    label="หมายเลขบัญชี"
+                    value={values.accno}
+                    onChange={handleChange}
+                    error={touched.accno && errors.accno ? true : false}
+                    fullWidth
+                  />
+                  {touched.accno && errors.accno && (
+                    <p className={classes.errorMessage}> {errors.accno} </p>
                   )}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  id="person"
-                  label="Person"
-                  className={classes.textField}
-                  value={values.person}
-                  onChange={handleChange}
-                  helperText={touched.person ? errors.person : ""}
-                  error={touched.person && Boolean(errors.person)}
-                  margin="normal"
-                  variant="outlined"
-                />
-              </Grid>
-            </Grid>
-            <Grid container item xs={12} spacing={5}>
-              <Grid item xs={6}>
-                <TextField
-                  id="price"
-                  name="price"
-                  label="Price"
-                  className={classes.textField}
-                  value={values.price}
-                  onChange={handleChange}
-                  helperText={touched.price ? errors.price : ""}
-                  error={touched.price && Boolean(errors.price)}
-                  margin="normal"
-                  variant="outlined"
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  select
-                  id="bank"
-                  name="bank"
-                  label="Bank:"
-                  values={values.bank}
-                  onChange={handleChange("bank")}
-                  helperText={touched.bank ? errors.bank : "Please select bank"}
-                  error={touched.category && Boolean(errors.category)}
-                  variant="outlined"
+                </Grid>
+                <Grid item xs={12} md={4}>
+                  <TextField
+                    id="accname"
+                    name="accname"
+                    label="ชื่อบัญชี"
+                    value={values.accname}
+                    onChange={handleChange}
+                    fullWidth
+                    error={touched.accname && errors.accname ? true : false}
+                  />
+                  {touched.accname && errors.accname && (
+                    <p className={classes.errorMessage}>{errors.accname}</p>
+                  )}
+                </Grid>
+                <MuiPickersUtilsProvider
+                  libInstance={moment}
+                  utils={MomentUtils}
                 >
-                  {bankCategory.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Grid>
-            </Grid>
-            <Grid container item xs={12} spacing={5}>
-              <Grid item xs={6}>
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <Grid container>
-                    <KeyboardDatePicker
-                      disableToolbar
-                      variant="inline"
-                      format="MM/dd/yyyy"
-                      margin="normal"
-                      id="startDate"
-                      name="startDate"
-                      label="Start Date"
-                      className={classes.textField}
-                      minDate={new Date()}
+                  <Grid item xs={12} md={6}>
+                    <KeyboardDateTimePicker
+                      fullWidth
+                      disablePast
+                      ampm={false}
                       value={values.startDate}
                       onChange={(value) =>
-                        props.setFieldValue("startDate", value)
+                        props.setFieldValue("startDate", moment(value).toJSON())
                       }
-                      helperText={touched.startDate ? errors.startDate : ""}
-                      error={touched.startDate && Boolean(errors.startDate)}
-                      KeyboardButtonProps={{
-                        "aria-label": "change date",
-                      }}
+                      label="วันเวลาเริ่ม"
+                      format="DD/MM/YYYY kk:mm"
+                      error={
+                        touched.startDate && errors.startDate ? true : false
+                      }
                     />
+                    {touched.startDate && errors.startDate && (
+                      <p className={classes.errorMessage}>{errors.startDate}</p>
+                    )}
                   </Grid>
-                </MuiPickersUtilsProvider>
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  id="accname"
-                  name="accname"
-                  label="AccName"
-                  className={classes.textField}
-                  value={values.accname}
-                  onChange={handleChange}
-                  helperText={touched.accname ? errors.accname : ""}
-                  error={touched.accname && Boolean(errors.accname)}
-                  margin="normal"
-                  variant="outlined"
-                />
-              </Grid>
-            </Grid>
-            <Grid container item xs={12} spacing={5}>
-              <Grid item xs={6}>
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <Grid container>
-                    <KeyboardDatePicker
-                      disableToolbar
-                      variant="inline"
-                      format="MM/dd/yyyy"
-                      margin="normal"
-                      id="endDate"
-                      name="endDate"
-                      label="End Date"
-                      className={classes.textField}
-                      minDate={values.startDate}
+                  <Grid item xs={12} md={6}>
+                    <KeyboardDateTimePicker
+                      fullWidth
+                      ampm={false}
                       value={values.endDate}
+                      format="DD/MM/YYYY kk:mm"
                       onChange={(value) =>
-                        props.setFieldValue("endDate", value)
+                        props.setFieldValue("endDate", moment(value).toJSON())
                       }
-                      helperText={touched.endDate ? errors.endDate : ""}
-                      error={touched.endDate && Boolean(errors.endDate)}
-                      KeyboardButtonProps={{
-                        "aria-label": "change date",
-                      }}
+                      minDate={values.startDate}
+                      label="วันเวลาจบ"
+                      error={touched.endDate && errors.endDate ? true : false}
                     />
+                    {touched.endDate && errors.endDate && (
+                      <p className={classes.errorMessage}>{errors.endDate}</p>
+                    )}
                   </Grid>
                 </MuiPickersUtilsProvider>
+                <Grid item xs={12}>
+                  <TextField
+                    id="description"
+                    label="Description"
+                    variant="outlined"
+                    multiline
+                    values={values.description}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    rowsMax={20}
+                    fullWidth
+                    error={
+                      touched.description && errors.description ? true : false
+                    }
+                  />
+                  {touched.description && errors.description && (
+                    <p className={classes.errorMessage}>{errors.description}</p>
+                  )}
+                </Grid>
+                <Grid container item xs={12}>
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    color="primary"
+                    fullWidth
+                  >
+                    Create
+                  </Button>
+                </Grid>
               </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  id="accno"
-                  name="accno"
-                  label="Accno"
-                  className={classes.textField}
-                  value={values.accno}
-                  onChange={handleChange}
-                  helperText={touched.accno ? errors.accno : ""}
-                  error={touched.accno && Boolean(errors.accno)}
-                  margin="normal"
-                  variant="outlined"
-                />
-              </Grid>
-            </Grid>
-            <Grid container item xs={12} spacing={5}>
-              <Grid item xs={6}>
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <Grid container>
-                    <KeyboardTimePicker
-                      disableToolbar
-                      variant="inline"
-                      mask="__:__ _M"
-                      margin="normal"
-                      id="startTime"
-                      name="startTime"
-                      label="Start Time"
-                      className={classes.textField}
-                      value={values.startTime}
-                      onChange={(value) =>
-                        props.setFieldValue("startTime", value)
-                      }
-                      helperText={touched.startTime ? errors.startTime : ""}
-                      error={touched.startTime && Boolean(errors.startTime)}
-                      KeyboardButtonProps={{
-                        "aria-label": "change date",
-                      }}
-                    />
-                  </Grid>
-                </MuiPickersUtilsProvider>
-              </Grid>
-              <Grid item xs={6}>
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <Grid container>
-                    <KeyboardTimePicker
-                      disableToolbar
-                      variant="inline"
-                      mask="__:__ _M"
-                      margin="normal"
-                      id="endTime"
-                      name="endTime"
-                      label="End Time"
-                      className={classes.textField}
-                      value={values.endTime}
-                      onChange={(value) =>
-                        props.setFieldValue("endTime", value)
-                      }
-                      helperText={touched.endTime ? errors.endTime : ""}
-                      error={touched.endTime && Boolean(errors.endTime)}
-                      KeyboardButtonProps={{
-                        "aria-label": "change date",
-                      }}
-                    />
-                  </Grid>
-                </MuiPickersUtilsProvider>
-              </Grid>
-            </Grid>
-            <Grid container item xs={12}>
-              <Button
-                variant="contained"
-                type="submit"
-                disabled={isSubmitting}
-                color="primary"
-                fullWidth
-              >
-                Create trip
-              </Button>
-            </Grid>
+            </form>
           </Grid>
-        </form>
-      </Grid>
-    </div>
+        </Grid>
+      </Paper>
     </Container>
   );
 };
@@ -430,8 +410,7 @@ const TourForm = (props) => {
 const form = withFormik({
   mapPropsToValues: ({
     picture,
-    tripname,
-    guidename,
+    tourname,
     category,
     description,
     destination,
@@ -442,16 +421,13 @@ const form = withFormik({
     accname,
     endDate,
     accno,
-    startTime,
-    endTime,
   }) => {
     return {
       picture: picture || "",
-      tripname: tripname || "",
-      guidename: guidename || "",
+      tourname: tourname || "",
       category: category || "",
       description: description || "",
-      destination: destination || "",
+      destination: [] || "",
       person: person || "",
       price: price || "",
       bank: bank || "",
@@ -459,16 +435,13 @@ const form = withFormik({
       accname: accname || "",
       endDate: endDate || null,
       accno: accno || "",
-      startTime: startTime || null,
-      endTime: endTime || null,
     };
   },
   validationSchema: yup.object().shape({
-    tripname: yup
+    tourname: yup
       .string()
       .required("This field is required")
       .min(5, "Please enter at least 5 characters"),
-    guidename: yup.string().required("This field is required"),
     price: yup
       .string()
       .required("This field is required")
@@ -490,19 +463,20 @@ const form = withFormik({
       .max(12, "Please enter 10 digit"),
     category: yup.string().required("This field is required"),
     bank: yup.string().required("This field is required"),
-    startDate: yup.string().required("This field is required"),
-    endDate: yup.string().required("This field is required"),
+    startDate: yup.date().required("This field is required").nullable(),
+    endDate: yup.date().min(yup.ref('startDate'),"วันเวลาจบต้องมากกว่าวันเวลาเริ่ม").required("This field is required").nullable(),
     picture: yup.string().required("This field is required"),
     destination: yup.string().required("This field is required"),
-    startTime: yup.string().required("This field is required"),
-    endTime: yup.string().required("This field is required"),
   }),
-
-  handleSubmit: (values, { setFieldValue, setSubmitting }) => {
+  handleSubmit: (values, { props, setFieldValue, setSubmitting }) => {
     // submit to the server
     setSubmitting(true);
     setFieldValue(values);
+    props.dispatch(addTour(values))
+    console.log(values)
   },
 })(TourForm);
 
-export default form;
+const addTourForm = connect()(form)
+
+export default addTourForm;
