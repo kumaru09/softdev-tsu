@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import { makeStyles } from '@material-ui/core/styles'
 import { Container, Grid, Avatar, Box } from '@material-ui/core'
 import PersonRoundedIcon from '@material-ui/icons/PersonRounded'
 import EmailRoundedIcon from '@material-ui/icons/EmailRounded'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchMember } from '../slices/member'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -103,6 +105,14 @@ const useStyles = makeStyles((theme) => ({
 
 const ProfilePage = () => {
     const classes = useStyles();
+    const dispatch = useDispatch()
+    const member = useSelector(state => state.member.member)
+
+    useEffect(() => {
+        let user = JSON.parse(atob(localStorage.getItem('user').split('.')[1]))
+        console.log(user.user_id)
+        dispatch(fetchMember(user.user_id))
+    },[dispatch])
 
     return(
         <Container maxwidth="md">
@@ -133,12 +143,12 @@ const ProfilePage = () => {
                     <Grid container md={12} spacing={1}>
                         <Grid item md={12}>
                             <div className={classes.content}>Firstname - Lastname</div>
-                            <Grid container md={12} spacing={3} direction="row">
-                                <Grid item md={6}>
-                                    <Box display="block" displayPrint="none" className={classes.twoBoxLayout}>(firstname)</Box>
+                            <Grid container spacing={3} direction="row">
+                                <Grid item xs={6} md={6}>
+                                    <Box display="block" displayPrint="none" className={classes.twoBoxLayout}>{member.name}</Box>
                                 </Grid>
-                                <Grid item md={6}>
-                                    <Box display="block" displayPrint="none" className={classes.twoBoxLayout}>(lastname)</Box>
+                                <Grid item xs={6} md={6}>
+                                    <Box display="block" displayPrint="none" className={classes.twoBoxLayout}>{member.surname}</Box>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -153,7 +163,7 @@ const ProfilePage = () => {
                         <Grid item md={12}>
                             <div className={classes.content}>Address</div>
                             <Grid item md={12}>
-                                <Box display="block" displayPrint="none" className={classes.boxLayout}>(address)</Box>
+                                <Box display="block" displayPrint="none" className={classes.boxLayout}>{member.address}</Box>
                             </Grid>
                         </Grid>
                     </Grid>
@@ -172,7 +182,7 @@ const ProfilePage = () => {
                         <Grid item md={12}>
                             <div className={classes.content}>Email</div>
                             <Grid item md={6}>
-                                <Box display="block" displayPrint="none" className={classes.boxLayout}>(email)</Box>
+                                <Box display="block" displayPrint="none" className={classes.boxLayout}>{member.email}</Box>
                             </Grid>
                         </Grid>
                     </Grid>
