@@ -1,26 +1,42 @@
-import React from "react";
-import { Grid, Avatar, Typography } from "@material-ui/core";
+import React, { Fragment } from "react";
+import {
+  Avatar,
+  Typography,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  Divider,
+} from "@material-ui/core";
 import moment from "moment/moment";
 
-export const Message = ({ message }) => (
-  <Grid container>
-    <Grid item>
-      <Avatar>S</Avatar>
-    </Grid>
-    <Grid item>
-      <Typography>{message.message}</Typography>
-      <Typography>
-        {moment
-          .utc(message.time)
-          .calendar(null, {
-            sameDay: "[Today]",
-            nextDay: "[Tomorrow]",
-            nextWeek: "dddd",
-            lastDay: "[Yesterday]",
-            lastWeek: "[Last] dddd",
-            sameElse: "DD/MM/YYYY",
-          })}
-      </Typography>
-    </Grid>
-  </Grid>
-);
+const Message = ({ message, name }) => {
+  return (
+    <Fragment>
+      <ListItem alignItems="flex-start">
+        <ListItemAvatar>
+          <Avatar alt="">{message.me ? "M" : name[0]}</Avatar>
+        </ListItemAvatar>
+        <ListItemText
+          primary={
+            <Fragment>
+              {message.me ? "คุณ " : `${name} `}
+              <Typography component="span" variant="caption">
+                {moment(message.time).calendar()}
+              </Typography>
+            </Fragment>
+          }
+          secondary={
+            <Fragment>
+              <Typography component="span" variant="body1" color="textPrimary">
+                {message.message}
+              </Typography>
+            </Fragment>
+          }
+        />
+      </ListItem>
+      <Divider variant="inset" />
+    </Fragment>
+  );
+};
+
+export default Message;

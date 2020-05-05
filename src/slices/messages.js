@@ -5,43 +5,43 @@ import { authHeader } from '../helpers/auth-header'
 export const initialState = {
     loading: false,
     hasError: false,
-    message: []
+    messages: []
 }
 
-const messageSlice = createSlice({
-    name: 'message',
+const messagesSlice = createSlice({
+    name: 'messages',
     initialState,
     reducers: {
-        MESSAGE_REQUEST: state => {
+        MESSAGES_REQUEST: state => {
             state.loading = true
         },
-        MESSAGE_SUCCESS: (state, { payload }) => {
+        MESSAGES_SUCCESS: (state, { payload }) => {
             state.loading = false
-            state.message = payload
+            state.messages = payload
             state.hasError = false
         },
-        MESSAGE_FAILURE: state => {
+        MESSAGES_FAILURE: state => {
             state.loading = false
             state.hasError = true
         }
     }
 })
 
-export const {MESSAGE_REQUEST, MESSAGE_SUCCESS, MESSAGE_FAILURE} = messageSlice.actions
-export default messageSlice.reducer
+export const {MESSAGES_REQUEST, MESSAGES_SUCCESS, MESSAGES_FAILURE} = messagesSlice.actions
+export default messagesSlice.reducer
 
-export function fetchMessage(contact) {
+export function fetchMessages() {
     return async dispatch => {
-        dispatch(MESSAGE_REQUEST())
+        dispatch(MESSAGES_REQUEST())
 
-        Axios.get(`http://api.sdp.19991999.xyz/messages/${contact}`, { headers: authHeader() })
+        Axios.get('http://api.sdp.19991999.xyz/messages', { headers: authHeader() })
         .then(res => {
             console.log(res.data)
-            dispatch(MESSAGE_SUCCESS(res.data))
+            dispatch(MESSAGES_SUCCESS(res.data))
         })
         .catch(err => {
             console.log(err)
-            dispatch(MESSAGE_FAILURE())
+            dispatch(MESSAGES_FAILURE())
         })
     }
 }
