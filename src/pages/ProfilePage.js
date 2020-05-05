@@ -179,6 +179,13 @@ const ProfilePage = () => {
                     </Grid>
 
                     <Grid container md={12} spacing={3}>
+                    <Grid item md={12}>
+                            <div className={classes.content}>Username</div>
+                            <Grid item md={6}>
+                                <Box display="block" displayPrint="none" className={classes.boxLayout}>(username)</Box>
+                            </Grid>
+                        </Grid>
+
                         <Grid item md={12}>
                             <div className={classes.content}>Email</div>
                             <Grid item md={6}>
