@@ -5,6 +5,7 @@ import toursReducer from '../slices/tours';
 import registerReducer from '../slices/register';
 import messageReducer from '../slices/message'
 import addtourReducer from '../slices/addtour'
+import messagesReducer from '../slices/messages'
 
 export default configureStore({
   reducer: {
@@ -13,6 +14,7 @@ export default configureStore({
     tours: toursReducer,
     register: registerReducer,
     message: messageReducer,
-    addtour: addtourReducer
+    addtour: addtourReducer,
+    messages: messagesReducer
   },
 });
