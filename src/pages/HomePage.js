@@ -38,6 +38,7 @@ const HomePage = () => {
 
   useEffect(() => {
     dispatch(searchTours());
+
   }, [dispatch]);
 
   const { tours, loading, hasError } = useSelector(toursSelector);
@@ -94,7 +95,7 @@ const HomePage = () => {
             {"ทริปยอดนิยม"}
           </Typography>
           <Grid container spacing={1} direction="column">
-            {tours.map((tour) => (
+            {tours && tours.map((tour) => (
               <Tour key={tour.id} tour={tour} />
             ))}
           </Grid>
