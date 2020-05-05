@@ -9,17 +9,25 @@ import {
   IconButton,
   makeStyles,
   Button,
+  useTheme,
+  AppBar,
+  Tabs,
+  Tab,
+  Box,
 } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTours, toursSelector, searchTours } from "../slices/tours";
 import { Tour } from "../component/Tour";
 import SearchIcon from "@material-ui/icons/Search";
 import { Link } from "react-router-dom";
+import PropTypes from 'prop-types';
+import SwipeableViews from 'react-swipeable-views';
 
 const useStyle = makeStyles((theme) => ({
   iconButton: {
     padding: 10,
   },
+
   header: {
     position: "absolute",
     backgroundImage: "url(https://source.unsplash.com/random)",
@@ -28,13 +36,73 @@ const useStyle = makeStyles((theme) => ({
     backgroundSize: 'cover',
     width: '100%'
   },
-  paper: {},
+
+  paper: {
+    padding: '1rem',
+    [theme.breakpoints.up('md')]: {
+      width: '20rem'
+    },
+    [theme.breakpoints.down('xs')]: {
+      marginTop: '1rem'
+    },
+    marginTop: '5rem',
+    margin: 'auto',
+  },
+
+  tabPanelLayout: {
+    backgroundColor: '#ffffff',
+    width: 1000,
+  },
+
 }));
+
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+     role="tabpanel"
+     hidden={value !== index}
+     id={'full-width-tabpanel-${index}'}
+     aria-labelledby={'full-width-tab-${index}'}
+     {...other}>
+       {value === index && (
+         <Box p={3}>
+           <Typography>{children}</Typography>
+         </Box>
+       )}
+    </div>
+  );
+}
+
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.any.isRequired,
+  value: PropTypes.any.isRequired
+};
+
+function allyProps(index) {
+  return {
+    id: 'full-width-tab-${index}',
+    'aria-controls': 'full-width-tabpanel-${index}'
+  };
+}
 
 const HomePage = () => {
   const classes = useStyle();
   const dispatch = useDispatch();
-  const [input, setInput] = useState('')
+  const [input, setInput] = useState('');
+
+  const theme = useTheme();
+  const [ value, setValue ] = useState(0);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  const handleChangeIndex = (index) => {
+    setValue(index);
+  };
 
   useEffect(() => {
     dispatch(searchTours());
@@ -56,7 +124,7 @@ const HomePage = () => {
       }
       <Container maxWidth="md">
         <Grid container justify="center">
-          <Grid item md={6}>
+          <Grid item md={12}>
             <Paper className={classes.paper}>
               <Typography variant="subtitle1" gutterBottom>
                 ไปเที่ยวกัน
@@ -69,6 +137,7 @@ const HomePage = () => {
               </IconButton>
               <InputBase
                 className={classes.input}
+                width="15rem"
                 placeholder="สถานที่"
                 inputProps={{ "aria-label": "ค้นหาสถานที่" }}
                 onChange={(event) => {setInput(event.target.value)}}
@@ -84,11 +153,50 @@ const HomePage = () => {
             {"ทริปแนะนำ"}
           </Typography>
           <Grid container spacing={3}>
-            <CardTrip />
-            <CardTrip />
-            <CardTrip />
+            <div className={classes.tabPanelLayout}>
+              <AppBar position="static" color="default">
+                <Tabs
+                 value={value}
+                 onChange={handleChange}
+                 indicatorColor="primary"
+                 textColor="primary"
+                 variant="fullWidth"
+                 aria-label="full width tab recommended trip" >
+                  <Tab label="History" {...allyProps(0)} />
+                  <Tab label="Relax" {...allyProps(1)} />
+                  <Tab label="Temple" {...allyProps(2)} />
+                </Tabs>
+              </AppBar>
+              <SwipeableViews
+               axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+               index={value}
+               onChangeIndex={handleChangeIndex} >
+                 <TabPanel value={value} index={0} dir={theme.direction}>
+                   <Grid container spacing={3}>
+                    <CardTrip />
+                    <CardTrip />
+                    <CardTrip />
+                   </Grid>
+                 </TabPanel>
+                 <TabPanel value={value} index={1} dir={theme.direction}>
+                  <Grid container spacing={3}>
+                    <CardTrip />
+                    <CardTrip />
+                    <CardTrip />
+                  </Grid>
+                 </TabPanel>
+                 <TabPanel value={value} index={2} dir={theme.direction}>
+                  <Grid container spacing={3}>
+                    <CardTrip />
+                    <CardTrip />
+                    <CardTrip />
+                   </Grid>
+                 </TabPanel>
+              </SwipeableViews>
+            </div>
           </Grid>
         </div>
+        
         <div style={{ marginTop: "3rem" }}>
           <Typography variant="h4" gutterBottom>
             {"ทริปยอดนิยม"}
