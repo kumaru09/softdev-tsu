@@ -6,9 +6,6 @@ import {
   Card,
   makeStyles,
   CardHeader,
-  CardContent,
-  Divider,
-  CardActions,
 } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { searchTours, toursSelector } from "../slices/tours";

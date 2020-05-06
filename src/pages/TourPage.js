@@ -138,9 +138,12 @@ const TourPage = ({ match }) => {
   }
 
   const ownerTour = () => {
-    let user = JSON.parse(atob(localStorage.getItem("user").split(".")[1]));
-    if (user.user_id === tour.owner) return false;
-    else return true;
+    if (localStorage.getItem("user") === null) return true
+    else {
+      let user = JSON.parse(atob(localStorage.getItem("user").split(".")[1]));
+      if (user.user_id === tour.owner) return false;
+      else return true;
+    }
   };
 
   return (
@@ -226,7 +229,7 @@ const TourPage = ({ match }) => {
           <Grid item xs>
             <List>{renderComments()}</List>
           </Grid>
-          {true ? (
+          {(ownerTour() || !review) && transcripts.confirm ? (
             <Grid item xs>
               <FormControl fullWidth variant="outlined">
                 <OutlinedInput

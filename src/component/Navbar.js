@@ -41,7 +41,7 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const isAuth = useSelector((state) => state.login.isAuth);
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
