@@ -53,6 +53,7 @@ export function fetchAllFavorite() {
   
       Axios.get('https://api.19991999.xyz/favorites/', { headers: authHeader() })
       .then(res => {
+        console.log(res.data)
         dispatch(getFavoriteSuccess(res.data))
       })
       .catch(err => {

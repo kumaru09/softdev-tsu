@@ -31,6 +31,7 @@ const Info = ({ tour, addTran, ownerTour }) => {
     const transcript = useSelector(state => state.transcript.transcript)
     return (
         <Fragment>
+        {console.log()}
             <CardHeader
                 className={classes.header}
                 title={tour.category}
@@ -55,13 +56,15 @@ const Info = ({ tour, addTran, ownerTour }) => {
                 <AttachMoneyIcon fontSize="small" />
                     {"ค่าใช้จ่าย: "}{tour.price ? tour.price : "FREE"}
                 </Typography>
-            </CardContent>
-           { ownerTour() ? <CardActions>
+            </CardContent> 
+            <CardActions>
+           { ownerTour() ?
+                <Fragment>
                 {!hasTranscript ? <Button color="secondary" fullWidth variant="contained" onClick={() => addTran()}>เข้าร่วมทัวร์</Button> : "" }
                 {hasTranscript && !transcript.confirm && !transcript.time ? <Button color="secondary" component={Link} to={`/createtranscript?tour=${transcript.tour}`} fullWidth variant="contained">แจ้งโอนเงิน</Button> : "" }
                 {hasTranscript && transcript.time && !transcript.confirm ? <Button disabled color="secondary" fullWidth variant="contained">{"รอการตรวจสอบ"}</Button> : ""}
-                {hasTranscript && transcript.confirm ? <Button disabled color="secondary" fullWidth variant="contained">{"เข้าร่วมเรียบร้อย"}</Button> : ""}
-            </CardActions> : "" }
+                {hasTranscript && transcript.confirm ? <Button disabled color="secondary" fullWidth variant="contained">{"เข้าร่วมเรียบร้อย"}</Button> : ""}</Fragment>
+             :  <Button color="secondary" component={Link} fullWidth variant="contained" to={`/tours/${tour.id}/transcript`}>รายการแจ้งโอนเงิน</Button> }</CardActions>
             { ownerTour() ? <CardActions>
             <Button color="secondary" component={Link} to={`/messages/${tour.owner}?name=${tour.g_name}`} fullWidth variant="outlined">ติดต่อสอบถาม</Button>
             </CardActions> : ""}

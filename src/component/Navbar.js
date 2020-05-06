@@ -61,7 +61,7 @@ const Navbar = () => {
       <Container maxWidth="md">
         <Toolbar>
           <Typography className={classes.logo}>
-            <Link to="/">Pi-theiyw</Link>
+            <Link to="/" style={{ textDecoration: 'none', color: 'black'}}>PI-THEIYW</Link>
           </Typography>
           <div className={classes.sectionDesktop}>
             <Button
@@ -101,6 +101,13 @@ const Navbar = () => {
                   </MenuItem>
                   <MenuItem
                     component={Link}
+                    to={"/mytour"}
+                    onClick={handleClose}
+                  >
+                    ทัวร์ของฉัน
+                  </MenuItem>
+                  <MenuItem
+                    component={Link}
                     to={"/messages"}
                     onClick={handleClose}
                   >
@@ -112,6 +119,13 @@ const Navbar = () => {
                     onClick={handleClose}
                   >
                     รายการโปรด
+                  </MenuItem>
+                  <MenuItem
+                    component={Link}
+                    to={"/transcript"}
+                    onClick={handleClose}
+                  >
+                    แจ้งโอนเงิน
                   </MenuItem>
                   <MenuItem
                     component={Link}

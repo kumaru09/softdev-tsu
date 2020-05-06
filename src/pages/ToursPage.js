@@ -50,7 +50,7 @@ const ToursPage = ({ location }) => {
   useEffect(() => {
     const search = new URLSearchParams(location.search).get("search");
 
-    dispatch(searchTours(search));
+    dispatch(searchTours(`?search=${search}`));
   }, [dispatch, location]);
 
   const renderSeacrh = () => {

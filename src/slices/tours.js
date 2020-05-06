@@ -35,7 +35,7 @@ export function searchTours(input) {
   return async dispatch => {
     dispatch(getTours())
 
-    Axios.get('https://api.19991999.xyz/tours/',{ params: {search: input} })
+    Axios.get(`https://api.19991999.xyz/tours${input}`)
     .then(res => {
         console.log(res.data)
         dispatch(getToursSuccess(res.data))

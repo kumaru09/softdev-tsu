@@ -64,6 +64,7 @@ export function fetchAllTranscript() {
       headers: authHeader(),
     })
       .then((res) => {
+          console.log(res.data)
         dispatch(getTranscriptSuccess(res.data));
       })
       .catch((err) => {
@@ -72,3 +73,20 @@ export function fetchAllTranscript() {
       });
   };
 }
+
+export function fetchTourTranscript(id) {
+    return async (dispatch) => {
+      dispatch(getTranscript());
+  
+      Axios.get(`https://api.19991999.xyz/tours/${id}/transcripts`, {
+        headers: authHeader(),
+      })
+        .then((res) => {
+          dispatch(getTranscriptSuccess(res.data));
+        })
+        .catch((err) => {
+          console.log(err);
+          dispatch(getTranscriptFailure());
+        });
+    };
+  }

@@ -9,6 +9,8 @@ import messagesReducer from '../slices/messages'
 import favoriteReducer from '../slices/favorite'
 import memberReducer from '../slices/member'
 import transcriptReducer from '../slices/transcript'
+import commentsReducer from '../slices/comments'
+import reviewReducer from '../slices/review'
 
 export default configureStore({
   reducer: {
@@ -21,6 +23,8 @@ export default configureStore({
     messages: messagesReducer,
     favorite: favoriteReducer,
     member: memberReducer,
-    transcript: transcriptReducer
+    transcript: transcriptReducer,
+    comments: commentsReducer,
+    review: reviewReducer
   },
 });

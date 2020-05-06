@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
 import Axios from "axios"
-import { history } from "../helpers/history"
 import { authHeader } from '../helpers/auth-header'
 
 export const initialState = {}
@@ -26,16 +25,21 @@ export default addtranscriptSlice.reducer
 
 export function upTranscript(input, id) {
     let fromdata = new FormData()
-    fromdata.append("file",input.transcript)
-    fromdata.append("time",input.transferDateTime)
+    fromdata.append("pic",input.transcript)
 
     return async dispatch => {
         dispatch(UPTRANSCRIPT_REQUEST())
         
-        Axios.put(`https://api.19991999.xyz/transcripts/${id}`,fromdata,{ headers: authHeader() })
-        .then(res => {
+        Axios.post(`https://api.19991999.xyz/upload`,fromdata,{ headers: authHeader() })
+        .then((res) => {
             console.log(res)
-            dispatch(UPTRANSCRIPT_SUCCESS())
+
+            Axios.put(`https://api.19991999.xyz/transcripts/${id}`,{ file: res.data.file, time: input.transferDateTime},{ headers: authHeader() })
+            .then((res) => {
+                console.log(res)
+                dispatch(UPTRANSCRIPT_SUCCESS())
+            })
+            
         })
         .catch(err => {
             console.log(err)

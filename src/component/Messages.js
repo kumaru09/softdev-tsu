@@ -12,8 +12,7 @@ import { Link } from "react-router-dom";
 
 export const Messages = ({ message }) => (
   <Fragment>
-  <Link to={`/messages/${message.contact}?name=${message.name}`}>
-    <ListItem alignItems="flex-start">
+    <ListItem alignItems="flex-start" component={Link} to={`/messages/${message.contact}?name=${message.name}`}>
       <ListItemAvatar>
         <Avatar alt="">{message.name[0]}</Avatar>
       </ListItemAvatar>
@@ -37,6 +36,5 @@ export const Messages = ({ message }) => (
       />
     </ListItem>
     <Divider variant="inset" />
-    </Link>
   </Fragment>
 );

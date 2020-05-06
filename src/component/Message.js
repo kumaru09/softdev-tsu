@@ -12,6 +12,7 @@ import moment from "moment/moment";
 const Message = ({ message, name }) => {
   return (
     <Fragment>
+    <Divider variant="inset" />
       <ListItem alignItems="flex-start">
         <ListItemAvatar>
           <Avatar alt="">{message.me ? "M" : name[0]}</Avatar>
@@ -34,7 +35,6 @@ const Message = ({ message, name }) => {
           }
         />
       </ListItem>
-      <Divider variant="inset" />
     </Fragment>
   );
 };

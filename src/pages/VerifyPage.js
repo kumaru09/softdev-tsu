@@ -135,6 +135,34 @@ const VerifyPage = (props) => {
                       className={classes.textField}
                     />
                   </Grid>
+                  <Grid item xs={12} md={12}>
+                    <div className={classes.header}>ชื่อธนาคาร:</div>
+                    <TextField
+                      id="identityNo"
+                      label="ชื่อธนาคาร"
+                      margin="normal"
+                      variant="outlined"
+                      values={values.identityNo}
+                      onChange={handleChange}
+                      helperText={touched.identityNo ? errors.identityNo : ""}
+                      error={touched.identityNo && Boolean(errors.identityNo)}
+                      className={classes.textField}
+                    />
+                  </Grid>
+                  <Grid item xs={12} md={12}>
+                    <div className={classes.header}>เลขบัญชีธนาคาร:</div>
+                    <TextField
+                      id="identityNo"
+                      label="เลขบัญชีธนาคาร"
+                      margin="normal"
+                      variant="outlined"
+                      values={values.identityNo}
+                      onChange={handleChange}
+                      helperText={touched.identityNo ? errors.identityNo : ""}
+                      error={touched.identityNo && Boolean(errors.identityNo)}
+                      className={classes.textField}
+                    />
+                  </Grid>
                   <Grid
                     container
                     item
