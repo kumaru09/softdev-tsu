@@ -16,6 +16,9 @@ import MessagesPage from './pages/MessagesPage'
 import MessagePage from './pages/MessagePage'
 import VerifyPage from './pages/VerifyPage'
 import FavoritePage from './pages/FavoritePage'
+import ProfilePage from './pages/ProfilePage'
+import TranscriptsPage from './pages/TranscriptsPage'
+import EditTourPage from './pages/EditTourPage'
 
 const App = () => {
   const theme = createMuiTheme({
@@ -60,12 +63,15 @@ const App = () => {
         <Route exact path="/register" component={Register} />
         <Route exact path="/tours/:id" component={TourPage} />
         <Route exact path="/tours" component={ToursPage} />
+        <PrivateRoute exact path="/profile" component={ProfilePage} />
         <PrivateRoute exact path="/messages" component={MessagesPage} />
         <PrivateRoute exact path="/messages/:contact" component={MessagePage} />
-        <PrivateRoute exact path="/transcript" component={TranscriptPage} />
+        <PrivateRoute exact path="/createtranscript" component={TranscriptPage} />
         <PrivateRoute exact path="/create" component={TourForm}  />
         <PrivateRoute exact path="/verify" component={VerifyPage} />
         <PrivateRoute exact path="/favorite" component={FavoritePage} />
+        <PrivateRoute exact path="/transcript" component={TranscriptsPage} />
+        <PrivateRoute exact path="/edittour" component={EditTourPage} />
         <Redirect to="/" />
       </Switch>
     </Router>
