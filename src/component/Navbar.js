@@ -1,98 +1,154 @@
-import React, { Fragment, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { useSelector, useDispatch } from 'react-redux'
-import { logout } from '../slices/login'
-import { AppBar, Toolbar, Button, Typography, makeStyles, Container, IconButton } from '@material-ui/core'
-import MoreIcon from '@material-ui/icons/MoreVert'
+import React, { Fragment, useState } from "react";
+import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../slices/login";
+import {
+  AppBar,
+  Toolbar,
+  Button,
+  Typography,
+  makeStyles,
+  Container,
+  IconButton,
+  Menu,
+  MenuItem,
+} from "@material-ui/core";
+import AccountCircle from "@material-ui/icons/AccountCircle";
 
 const useStyle = makeStyles((theme) => ({
-    logo: {
-        flex: 1
+  logo: {
+    flex: 1,
+  },
+  button: {
+    marginRight: theme.spacing(1),
+  },
+  sectionDesktop: {
+    display: "none",
+    [theme.breakpoints.up("md")]: {
+      display: "flex",
     },
-    button: {
-        marginRight: theme.spacing(1),
+  },
+  sectionMobile: {
+    display: "flex",
+    [theme.breakpoints.up("md")]: {
+      display: "none",
     },
-    sectionDesktop: {
-        display: 'none',
-        [theme.breakpoints.up('md')]: {
-          display: 'flex',
-        },
-      },
-    sectionMobile: {
-        display: 'flex',
-        [theme.breakpoints.up('md')]: {
-          display: 'none',
-        },
-      },
-}))
+  },
+}));
 
 const Navbar = () => {
-    const classes = useStyle()
-    const [anchorEl, setAnchorEl] = useState(null)
-    const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+  const classes = useStyle();
+  const dispatch = useDispatch();
+  const isAuth = useSelector((state) => state.login.isAuth);
 
-    const isAuth = useSelector(state => state.login.isAuth)
-    const dispatch = useDispatch()
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
-    const isMenuOpen = Boolean(anchorEl);
-    const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
 
-    const handleProfileMenuOpen = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
-    const handleMobileMenuClose = () => {
-        setMobileMoreAnchorEl(null);
-    };
+  const handleLogout = () => {
+    handleClose();
+    dispatch(logout());
+  };
 
-    const handleMenuClose = () => {
-        setAnchorEl(null);
-        handleMobileMenuClose();
-    };
+  return (
+    <AppBar position="static">
+      <Container maxWidth="md">
+        <Toolbar>
+          <Typography className={classes.logo}>
+            <Link to="/">Pi-theiyw</Link>
+          </Typography>
+          <div className={classes.sectionDesktop}>
+            <Button
+              variant="contained"
+              className={classes.button}
+              component={Link}
+              to={"/create"}
+              color="secondary"
+            >
+              สร้างทัวร์
+            </Button>
+            {isAuth && (
+              <Fragment>
+                <IconButton
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  onClick={handleClick}
+                  color="inherit"
+                >
+                  <AccountCircle />
+                </IconButton>
+                <Menu
+                  id="simple-menu"
+                  anchorEl={anchorEl}
+                  keepMounted
+                  open={Boolean(anchorEl)}
+                  onClose={handleClose}
+                  disableScrollLock={true}
+                >
+                  <MenuItem
+                    component={Link}
+                    to={"/profile"}
+                    onClick={handleClose}
+                  >
+                    โปรไฟล์
+                  </MenuItem>
+                  <MenuItem
+                    component={Link}
+                    to={"/messages"}
+                    onClick={handleClose}
+                  >
+                    ข้อความ
+                  </MenuItem>
+                  <MenuItem
+                    component={Link}
+                    to={"/favorite"}
+                    onClick={handleClose}
+                  >
+                    รายการโปรด
+                  </MenuItem>
+                  <MenuItem
+                    component={Link}
+                    to={"/"}
+                    onClick={() => {
+                      handleLogout();
+                    }}
+                  >
+                    ออกจากระบบ
+                  </MenuItem>
+                </Menu>
+              </Fragment>
+            )}
+            {!isAuth && (
+              <Fragment>
+                <Button
+                  component={Link}
+                  className={classes.button}
+                  to={"/register"}
+                >
+                  Signup
+                </Button>
+                <Button
+                  component={Link}
+                  className={classes.button}
+                  to={"/login"}
+                >
+                  Login
+                </Button>
+              </Fragment>
+            )}
+          </div>
+          <div className={classes.sectionMobile}></div>
+        </Toolbar>
+      </Container>
+    </AppBar>
+  );
+};
 
-    const handleMobileMenuOpen = (event) => {
-        setMobileMoreAnchorEl(event.currentTarget);
-    };
-
-    const mobileMenuId = 'primary-search-account-menu-mobile';
-
-    const renderButtonUser = () => {
-        if (isAuth) {
-            return <Button component={Link} className={classes.button} to="/" onClick={() =>{dispatch(logout())}}>Logout</Button>
-        } else {
-            return (
-                <Fragment>
-                    <Button component={Link} className={classes.button} to={"/register"}>Signup</Button>
-                    <Button component={Link} className={classes.button} to={"/login"}>Login</Button>
-                </Fragment>
-            )
-        }
-    }
-
-    return (
-        <AppBar position="static"> 
-            <Container maxWidth="md">
-                <Toolbar>
-                    <Typography className={classes.logo}><Link to="/">Pi-theiyw</Link></Typography>
-                    <div className={classes.sectionDesktop}>
-                    <Button variant="contained" className={classes.button} component={Link} to={"/create"} color="secondary">Create</Button>
-                    {renderButtonUser()}
-                    </div>
-                    <div className={classes.sectionMobile}>
-                        <IconButton
-                            aria-label="show more"
-                            aria-controls={mobileMenuId}
-                            aria-haspopup="true"
-                            onClick={handleMobileMenuOpen}
-                            color="inherit"
-                        >
-                            <MoreIcon />
-                        </IconButton>
-                    </div>
-                </Toolbar>
-            </Container>
-        </AppBar>
-    )
-}
-
-export default Navbar
+export default Navbar;

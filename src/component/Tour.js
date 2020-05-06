@@ -1,9 +1,10 @@
 import React from 'react'
 import { Paper, Grid, Typography, CardActionArea } from '@material-ui/core'
+import { Link } from 'react-router-dom'
 
 export const Tour = ({ tour }) => (
     <Grid item xs>
-    <CardActionArea component="a" href={`/tours/${tour.id}`}>
+    <CardActionArea component={Link} to={`/tours/${tour.id}`}>
     <Paper>
         <Grid container wrap="nowrap" direction="column">
             <Grid item xs>

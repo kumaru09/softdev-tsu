@@ -4,7 +4,7 @@ import Axios from 'axios'
 export const initialState = {
   loading: false,
   hasErrors: false,
-  tour: {},
+  tour: [],
 }
 
 const tourSlice = createSlice({
@@ -34,7 +34,7 @@ export function fetchTour(id) {
   return async dispatch => {
     dispatch(getTour())
 
-    Axios.get(`http://api.sdp.19991999.xyz/tours/${id}`)
+    Axios.get(`https://api.19991999.xyz/tours/${id}`)
     .then(res => {
       dispatch(getTourSuccess(res.data))
     })

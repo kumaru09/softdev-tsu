@@ -1,73 +1,184 @@
-import React, { useEffect } from 'react'
-import { Container, Typography, Grid, makeStyles, Paper, Button } from '@material-ui/core'
-import { useDispatch, useSelector } from 'react-redux'
-import { tourSelector, fetchTour } from '../slices/tour'
-import moment from 'moment'
-import 'moment/locale/th'
+import React, { useEffect, Fragment } from "react";
+import {
+  Container,
+  Typography,
+  Grid,
+  makeStyles,
+  Button,
+  Card,
+  CardMedia,
+  ListItem,
+  ListItemAvatar,
+  Avatar,
+  ListItemText,
+  Divider,
+  List,
+} from "@material-ui/core";
+import { useDispatch, useSelector } from "react-redux";
+import { tourSelector, fetchTour } from "../slices/tour";
+import "moment/locale/th";
+import Info from "../component/Info";
+import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
+import { fetchFavorite } from "../slices/favorite";
+import { authHeader } from "../helpers/auth-header";
+import { fetchTranscript } from "../slices/transcript";
+import EditIcon from '@material-ui/icons/Edit';
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
-    img: {
-        backgroundSize: 'cover',
-        backgroundRepeat: 'no-repeat',
-        backgroundPosition: 'center',
-        backgroundImage: 'url(https://placekitten.com/600/750)',
-    },
-}))
+  img: {
+    backgroundSize: "cover",
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center",
+    backgroundImage: "url(https://placekitten.com/600/750)",
+  },
+  media: {
+    height: 0,
+    paddingTop: "56.25%",
+  },
+  header: {
+    marginTop: "1.5rem",
+    marginBottom: "0.2rem",
+  },
+}));
 
 const TourPage = ({ match }) => {
-    const classes = useStyles()
-    const dispatch = useDispatch()
+  const classes = useStyles();
+  const dispatch = useDispatch();
+  const favoriteState = useSelector((state) => state.favorite.favorite);
 
-    useEffect(() => {
-        const { id } = match.params
+  useEffect(() => {
+    const { id } = match.params;
+    dispatch(fetchTour(id));
+    dispatch(fetchFavorite(id));
+    dispatch(fetchTranscript(id))
+  },[dispatch,match]);
 
-        dispatch(fetchTour(id))
-    }, [dispatch, match])
+  const { tour, loading, hasError } = useSelector(tourSelector);
 
-    const { tour, loading, hasError } = useSelector(tourSelector)
+  const renderInfo = () => {
+    if (loading) return "";
+    if (hasError) return <p>เกิดข้อผิดพลาดบางอย่าง..</p>;
 
-    moment.locale('th')
+    return <Info tour={tour} addTran={addTran} ownerTour={ownerTour} />;
+  };
 
-    return (
-        <Container>
-            <div style={{marginTop: "1.5rem"}}>
-                <Typography variant="h3" gutterBottom>{tour.name}</Typography>
-            </div>
-            <div>
-                <Paper>
-                <Grid container spacing={1}>
-                    <Grid className={classes.img} item xs={12} md={8} />
-                    <Grid item xs={12} md={4}>
-                        <Grid container direction="column">
-                            <Grid item>
-                                <Typography variant="subtitle1">{"เวลาเดินทาง:"}</Typography>
-                                <Typography variant="subtitle1">{"ตั้งแต่"}{moment(tour.first_day).format('LLLL')}</Typography>
-                                <Typography variant="subtitle1" gutterBottom>{"ถึง"}{moment(tour.last_day).format('LLLL')}</Typography>
-                            </Grid>
-                            <Grid item style={{marginBottom: "1rem"}}>
-                                <Typography variant="subtitle1">{"สถานที่:"}</Typography>
-                                <Typography variant="subtitle1" gutterBottom>{tour.list}</Typography>
-                            </Grid>
-                            <Grid item style={{marginLeft: "auto", marginRight: "1rem", marginBottom: "0.25rem"}}>
-                                <Button>{tour.price}{""}</Button>
-                                <Button color="primary" variant="contained">เข้าร่วม</Button>
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                </Grid>
-                </Paper>
-            </div>
-            <section>
-                <Typography variant="h3" gutterBottom>Description</Typography>
-                <Grid container>
-                    {tour.description}
-                </Grid>
-            </section>
-            <section>
-                <Typography>ไกด์: {tour.g_name}{" "}{tour.g_surname}</Typography>
-            </section>
+  async function addFavor() {
+    const { id } = match.params;
+    let config = {
+      method: "POST",
+      headers: authHeader(),
+    };
+    try {
+      const response = await fetch(
+        `https://api.19991999.xyz/favorites/${id}`,
+        config
+      );
+      const data = await response.json();
+      console.log(data);
+      dispatch(fetchFavorite(id));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  async function addTran() {
+    const { id } = match.params;
+    let config = {
+      method: "POST",
+      headers: authHeader(),
+    };
+    try {
+      const response = await fetch(
+        `https://api.19991999.xyz/transcripts/${id}`,
+        config
+      );
+      const data = await response.json();
+      console.log(data);
+      dispatch(fetchTranscript(id))
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  const ownerTour = () => {
+    let user = JSON.parse(atob(localStorage.getItem('user').split('.')[1]))
+    if (user.user_id === tour.owner) return false
+    else return true
+  }
+
+  return (
+    <Fragment>
+      <Container maxWidth="md">
+        <Grid
+          container
+          spacing={2}
+          alignItems="center"
+          className={classes.header} 
+        >
+          <Grid item xs>
+            <Typography variant="h5" component="span">{tour.name}</Typography>
+          </Grid>
+          <Grid item>
+            {ownerTour() ? <Button
+              disabled={favoriteState}
+              fullWidth
+              startIcon={<FavoriteBorderIcon />}
+              onClick={() => {
+                addFavor();
+              }}
+              variant="outlined"
+            >
+              {favoriteState ? "ถูกใจแล้ว" : "ถูกใจ"}
+            </Button> :
+            <Button
+              startIcon={<EditIcon />}
+              fullWidth
+              variant="outlined"
+              component={Link}
+              to={`/edittour?tour=${tour.id}`}
+            >
+            แก้ไข
+            </Button>}
+          </Grid>
+        </Grid>
+        <Grid container spacing={1}>
+          <Grid item xs={12} md={8}>
+            <CardMedia
+              className={classes.media}
+              image="https://placekitten.com/600/750"
+            />
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Card>{renderInfo()}</Card>
+          </Grid>
+        </Grid>
+      </Container>
+      <section style={{ backgroundColor: "#f0f4f9", marginTop: "2.0rem" }}>
+        <Container maxWidth="md">
+          <Typography variant="h4" gutterBottom>
+            Description
+          </Typography>
+          <Grid container spacing={4} direction="column">
+            <Grid item xs>
+              {tour.description}
+            </Grid>
+            <Grid item xs>
+              <Divider variant="fullWidth" />
+              <List>
+                <ListItem alignItems="flex-start">
+                  <ListItemAvatar>
+                    <Avatar alt="">{tour.g_name && tour.g_name[0]}</Avatar>
+                  </ListItemAvatar>
+                  <ListItemText />
+                </ListItem>
+              </List>
+            </Grid>
+          </Grid>
         </Container>
-    )
-}
+      </section>
+    </Fragment>
+  );
+};
 
-export default TourPage
+export default TourPage;

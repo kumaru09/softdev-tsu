@@ -40,9 +40,9 @@ export function addTour(input) {
     }
 
     return async dispatch => {
-        dispatch(ADDTOUR_REQUEST)
+        dispatch(ADDTOUR_REQUEST())
         
-        Axios.post('http://api.sdp.19991999.xyz/tours/',tour,{ headers: authHeader(), data: fromdata})
+        Axios.post('https://api.19991999.xyz/tours/',tour,{ headers: authHeader(), data: fromdata})
         .then(res => {
             console.log(res)
         })

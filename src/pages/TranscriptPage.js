@@ -11,6 +11,7 @@ import moment from "moment";
 import "moment/locale/th";
 import MomentUtils from "@date-io/moment";
 import { connect } from "react-redux";
+import { upTranscript } from "../slices/uptranscript";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -205,9 +206,12 @@ const transcriptForm = withFormik({
   }),
 
   handleSubmit: (values, { props, setFieldValue, setSubmitting }) => {
+    let id = new URLSearchParams(props.location.search).get("tour")
+    console.log(id)
     setSubmitting(true);
     setFieldValue(values);
     console.log(values)
+    props.dispatch(upTranscript(values, id))
   },
 })(TranscriptPage);
 
