@@ -441,7 +441,9 @@ const form = withFormik({
     tourname: yup
       .string()
       .required("This field is required")
-      .min(5, "Please enter at least 5 characters"),
+      .min(5, "Please enter at least 5 characters")
+	  .max(50, "Please Enter less then 50 letters"),
+	  
     price: yup
       .string()
       .required("This field is required")
@@ -453,14 +455,15 @@ const form = withFormik({
     description: yup
       .string()
       .required("This field is required")
-      .min(10, "Please enter at least 10 characters"),
+      .min(10, "Please enter at least 10 characters")
+	  .max(100, "Please Enter less then 100 letters"),
     accname: yup.string().required("This fileld is required"),
     accno: yup
       .string()
       .required("This field is required")
       .matches(checkNumberOnly, "Pleaase enter only number")
       .min(10, "Please enter 10 digit")
-      .max(12, "Please enter 10 digit"),
+      .max(10, "Please enter 10 digit"),
     category: yup.string().required("This field is required"),
     bank: yup.string().required("This field is required"),
     startDate: yup.date().required("This field is required").nullable(),
