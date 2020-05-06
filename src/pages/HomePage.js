@@ -16,7 +16,7 @@ import {
   Box,
 } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchTours, toursSelector, searchTours } from "../slices/tours";
+import { searchTours } from "../slices/tours";
 import { Tour } from "../component/Tour";
 import SearchIcon from "@material-ui/icons/Search";
 import { Link } from "react-router-dom";
@@ -63,8 +63,8 @@ function TabPanel(props) {
     <div
      role="tabpanel"
      hidden={value !== index}
-     id={'full-width-tabpanel-${index}'}
-     aria-labelledby={'full-width-tab-${index}'}
+     id={`full-width-tabpanel-${index}`}
+     aria-labelledby={`full-width-tab-${index}`}
      {...other}>
        {value === index && (
          <Box p={3}>
@@ -83,8 +83,8 @@ TabPanel.propTypes = {
 
 function allyProps(index) {
   return {
-    id: 'full-width-tab-${index}',
-    'aria-controls': 'full-width-tabpanel-${index}'
+    id: `full-width-tab-${index}`,
+    'aria-controls': `full-width-tabpanel-${index}`
   };
 }
 
@@ -109,7 +109,7 @@ const HomePage = () => {
 
   }, [dispatch]);
 
-  const { tours, loading, hasError } = useSelector(toursSelector);
+  const tours = useSelector(state => state.tours.tours)
 
   return (
     <div
