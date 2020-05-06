@@ -63,15 +63,15 @@ const registerSchema = yup.object().shape({
     .string()
     .required("This field is required.")
     .matches(checkCharacterOnly, "Please enter only characters.")
-    .min(3, "Please enter at least 3 characters."),
-	.max(50, "Please enter at less than 50 characters."),
+    .min(3, "Please enter at least 3 characters.")
+	  .max(50, "Please enter at less than 50 characters."),
 
   lastName: yup
     .string()
     .required("This field is required.")
     .matches(checkCharacterOnly, "Please enter only characters.")
-    .min(3, "Please enter at least 3 characters."),
-	.max(50, "Please enter at less than 50 characters."),
+    .min(3, "Please enter at least 3 characters.")
+	  .max(50, "Please enter at less than 50 characters."),
 
   phoneNumber: yup
     .string()
@@ -92,14 +92,14 @@ const registerSchema = yup.object().shape({
   password: yup
     .string()
     .required("This field is required.")
-    .min(3, "Please Enter less then 3 letters"),
-	.max(20, "Please enter at less than 20 characters."),
+    .min(3, "Please Enter less then 3 letters")
+	  .max(20, "Please enter at less than 20 characters."),
 	
   confirmPassword: yup
     .string()
     .required("This field is required.")
     .min(3, "This field at least 3 characters.")
-	.max(20, "Please enter at less than 20 characters."),
+	  .max(20, "Please enter at less than 20 characters.")
     .oneOf([yup.ref("password"), null], "Password not match."),
 });
 
