@@ -36,7 +36,7 @@ export function register(members) {
     return async dispatch => {
         dispatch(REGISTER_REQUEST())
 
-        Axios.post('http://api.sdp.19991999.xyz/members/',input)
+        Axios.post('https://api.19991999.xyz/members/',input)
         .then(res => {
             dispatch(REGISTER_SUCCESS())
             history.push('/')

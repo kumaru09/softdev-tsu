@@ -34,7 +34,7 @@ export function fetchMessage(contact) {
     return async dispatch => {
         dispatch(MESSAGE_REQUEST())
 
-        Axios.get(`http://api.sdp.19991999.xyz/messages/${contact}`, { headers: authHeader() })
+        Axios.get(`https://api.19991999.xyz/messages/${contact}`, { headers: authHeader() })
         .then(res => {
             console.log(res.data)
             dispatch(MESSAGE_SUCCESS(res.data))
