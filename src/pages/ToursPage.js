@@ -8,6 +8,11 @@ import {
   InputBase,
   Button,
   Input,
+  makeStyles,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import { Link } from "react-router-dom";
@@ -37,6 +42,7 @@ const useStyle = makeStyles((theme) => ({
   },
 }));
 const ToursPage = ({ location }) => {
+  const classes = useState()
   const tours = useSelector((state) => state.tours.tours);
   const dispatch = useDispatch();
   const [input, setInput] = useState("");
