@@ -6,6 +6,9 @@ import registerReducer from '../slices/register';
 import messageReducer from '../slices/message'
 import addtourReducer from '../slices/addtour'
 import messagesReducer from '../slices/messages'
+import favoriteReducer from '../slices/favorite'
+import memberReducer from '../slices/member'
+import transcriptReducer from '../slices/transcript'
 
 export default configureStore({
   reducer: {
@@ -15,6 +18,9 @@ export default configureStore({
     register: registerReducer,
     message: messageReducer,
     addtour: addtourReducer,
-    messages: messagesReducer
+    messages: messagesReducer,
+    favorite: favoriteReducer,
+    member: memberReducer,
+    transcript: transcriptReducer
   },
 });
