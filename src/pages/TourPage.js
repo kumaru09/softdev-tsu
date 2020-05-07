@@ -245,7 +245,7 @@ const TourPage = ({ match }) => {
           <Grid item xs>
             <List>{renderComments()}</List>
           </Grid>
-          {(ownerTour() && !review) && transcripts.confirm ? (
+          {(ownerTour() || !review) && transcripts.confirm ? (
             <Grid item xs>
               <FormControl fullWidth variant="outlined">
                 <OutlinedInput
