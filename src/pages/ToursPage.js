@@ -22,6 +22,7 @@ import {
 import SearchIcon from "@material-ui/icons/Search";
 import { Link } from "react-router-dom";
 import { searchTours } from "../slices/tours";
+import { useStyles } from "@material-ui/pickers/views/Calendar/SlideTransition";
 
 const tourCategory = [
   {
@@ -54,7 +55,7 @@ const useStyle = makeStyles((theme) => ({
   },
 }));
 const ToursPage = ({ location }) => {
-  const classes = useState()
+  const classes = useStyle()
   const tours = useSelector((state) => state.tours.tours);
   const dispatch = useDispatch();
   const [input, setInput] = useState("");

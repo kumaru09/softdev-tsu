@@ -6,13 +6,15 @@ export const Tour = ({ tour }) => (
     <Fragment>
     <ListItem component={Link} to={`/tours/${tour.id}`} style={{color: '#000'}}>
         <ListItemText 
-            primary={<Typography variant="h6">{tour.name}</Typography>}
+            primary={<Typography component="span" variant="h6">{tour.name}</Typography>}
             secondary={
                 <Fragment>
-            <Typography variant="body2">
-            {tour.description.substring(0, 250)+"..."}
+            <Typography component="span" variant="body1">
+            {tour.description.substring(0, 250)} 
             </Typography>
-            {tour.g_name}
+            <Typography component="span" variant="subtitle1">
+            {" - "+tour.g_name}
+            </Typography>
             </Fragment>}
         />
     </ListItem>

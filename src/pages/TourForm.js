@@ -27,6 +27,8 @@ import "moment/locale/th";
 import MomentUtils from "@date-io/moment";
 import { connect } from "react-redux";
 import { addTour } from "../slices/addtour";
+import Axios from "axios";
+import { authHeader } from "../helpers/auth-header";
 
 const useStyles = makeStyles((theme) => ({
   errorMessage: {
@@ -427,7 +429,7 @@ const form = withFormik({
       tourname: tourname || "",
       category: category || "",
       description: description || "",
-      destination: [] || "",
+      destination: [],
       person: person || "",
       price: price || "",
       bank: bank || "",
@@ -471,11 +473,36 @@ const form = withFormik({
     picture: yup.string().required("This field is required"),
     destination: yup.string().required("This field is required"),
   }),
-  handleSubmit: (values, { props, setFieldValue, setSubmitting }) => {
+  handleSubmit: async (values, { props, setFieldValue, setSubmitting }) => {
     // submit to the server
     setSubmitting(true);
     setFieldValue(values);
-    props.dispatch(addTour(values))
+    const destinationID = []
+    await values.destination.forEach((value) => {
+        Axios.get(`https://api.19991999.xyz/places/?name=${value}`, {headers: authHeader()})
+        .then(res => {
+          if (res.data === null) {
+            Axios.post('https://api.19991999.xyz/places/', { name: value, lat: 0, lon: 0 }, {headers: authHeader()})
+            .then(res => {
+              console.log(res.data)
+              destinationID.push(res.data.id)
+              console.log(destinationID)
+            })
+            .catch(err => {
+              console.log(err)
+            })
+          }
+          else {
+            destinationID.push(res.data[0].id)
+            console.log(destinationID)
+          }
+          
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    })
+    await props.dispatch(addTour(values, destinationID))
     console.log(values)
   },
 })(TourForm);

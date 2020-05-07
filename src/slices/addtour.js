@@ -24,7 +24,7 @@ const addtourSlice = createSlice({
 export const {ADDTOUR_REQUEST, ADDTOUR_SUCCESS, ADDTOUR_FAILURE} = addtourSlice.actions
 export default addtourSlice.reducer
 
-export function addTour(input) {
+export function addTour(input, id) {
     let fromdata = new FormData()
     fromdata.append("pic",input.picture)
 
@@ -43,13 +43,20 @@ export function addTour(input) {
                     last_day: input.endDate,
                     price: input.price,
                     status: 1,
-                    list: input.destination,
+                    list: id,
                     pic: res.data.file
                 }
             console.log(tour)
             Axios.post('https://api.19991999.xyz/tours/',tour,{ headers: authHeader()})
             .then(res => {
                 console.log(res)
+                Axios.post(`https://api.19991999.xyz/tours/${res.data.id}/lists`, {list : id} ,{headers: authHeader()} )
+                .then(res => {
+                    console.log(res)
+                })
+                .catch(err => {
+                    console.log(err)
+                })
                 history.push(`/tours/${res.data.id}`)
             })
             .catch(err => {
