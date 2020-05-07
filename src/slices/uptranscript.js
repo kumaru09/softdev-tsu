@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit"
 import Axios from "axios"
 import { authHeader } from '../helpers/auth-header'
+import { history } from "../helpers/history"
 
 export const initialState = {}
 
@@ -38,6 +39,9 @@ export function upTranscript(input, id) {
             .then((res) => {
                 console.log(res)
                 dispatch(UPTRANSCRIPT_SUCCESS())
+            })
+            .then(() => {
+                history.push('/transcript')
             })
             
         })

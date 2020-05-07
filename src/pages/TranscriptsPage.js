@@ -38,7 +38,8 @@ const TranscriptsPage = () => {
     }
 
     const renderTranscript = () => {
-        if (loading) return <p>กำลังโหลดข้อมูล...</p>
+        if (loading) return <Typography>กำลังโหลดข้อมูล...</Typography>
+        if (!transcripts) return <Typography>ไม่มีประวัติการแจ้งโอน...</Typography>
         
         return Array.isArray(transcripts) && transcripts.map((transcript) => (<Transcripts key={transcript.tour} transcript={transcript} deleteTranscript={deleteTranscript} />))
     }

@@ -50,14 +50,18 @@ export function addTour(input, id) {
             Axios.post('https://api.19991999.xyz/tours/',tour,{ headers: authHeader()})
             .then(res => {
                 console.log(res)
-                Axios.post(`https://api.19991999.xyz/tours/${res.data.id}/lists`, {list : id} ,{headers: authHeader()} )
+                console.log(id)
+                Axios.post(`https://api.19991999.xyz/tours/${res.data.id}/lists`, {place : id} ,{headers: authHeader()} )
                 .then(res => {
                     console.log(res)
+                })
+                .then(() => {
+                    history.push(`/tours/${res.data.id}`)
                 })
                 .catch(err => {
                     console.log(err)
                 })
-                history.push(`/tours/${res.data.id}`)
+                
             })
             .catch(err => {
                 console.log(err)

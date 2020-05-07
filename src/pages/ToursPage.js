@@ -21,8 +21,7 @@ import {
 } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import { Link } from "react-router-dom";
-import { searchTours } from "../slices/tours";
-import { useStyles } from "@material-ui/pickers/views/Calendar/SlideTransition";
+import { searchTours, toursSelector } from "../slices/tours";
 
 const tourCategory = [
   {
@@ -56,7 +55,7 @@ const useStyle = makeStyles((theme) => ({
 }));
 const ToursPage = ({ location }) => {
   const classes = useStyle()
-  const tours = useSelector((state) => state.tours.tours);
+  const { tours, loading, hasErrors }= useSelector(toursSelector);
   const dispatch = useDispatch();
   const [input, setInput] = useState("");
   const search = new URLSearchParams(location.search).get("search");
@@ -68,6 +67,8 @@ const ToursPage = ({ location }) => {
   }, [dispatch, location]);
 
   const renderSeacrh = () => {
+    if (loading) return <Typography>กำลังโหลดข้อมูล...</Typography>
+    if (hasErrors) return <Typography>เกิดข้อผิดพลาดบางอย่าง...</Typography>
     if (!tours) return <Typography>ไม่ค้นพบทัวร์ที่ต้องการค้นหา...</Typography>;
 
     return tours.map((tour) => <Tour key={tour.id} tour={tour} />);

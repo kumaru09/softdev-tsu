@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import * as yup from "yup";
 import { makeStyles } from "@material-ui/core/styles";
 import {
@@ -13,21 +13,20 @@ import {
   InputLabel,
   Input,
   Chip,
-  FormControlLabel,
-  Checkbox,
 } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import {
   MuiPickersUtilsProvider,
   KeyboardDateTimePicker,
 } from "@material-ui/pickers";
-import { withFormik, Field } from "formik";
+import { withFormik } from "formik";
 import moment from "moment";
 import "moment/locale/th";
 import MomentUtils from "@date-io/moment";
-import { connect, useDispatch, useSelector } from "react-redux";
+import { connect } from "react-redux";
 import { addTour } from "../slices/addtour";
-import { fetchTour } from "../slices/tour";
+import Axios from "axios";
+import { authHeader } from "../helpers/auth-header";
 
 const useStyles = makeStyles((theme) => ({
   errorMessage: {
@@ -65,33 +64,35 @@ const useStyles = makeStyles((theme) => ({
 
 const tourCategory = [
   {
-    value: "history",
+    value: "History",
     label: "History",
   },
   {
-    value: "relax",
+    value: "Relax",
     label: "Relax",
   },
   {
-    value: "temple",
+    value: "Temple",
     label: "Temple",
+  },
+  {
+    value: "ช้อปปิ้ง",
+    label: "ช้อปปิ้ง"
+  },
+  {
+    value: "อาหาร",
+    label: "อาหาร"
+  },
+  {
+    value: "ออกกำลังกาย",
+    label: "ออกกำลังกาย"
+  },
+  {
+    value: "เดินเล่น",
+    label: "เดินเล่น"
   },
 ];
 
-const bankCategory = [
-  {
-    value: "kasikorn",
-    label: "ธนาคารกสิกร",
-  },
-  {
-    value: "SCB",
-    label: "ธนาคารไทยพาณิชย์",
-  },
-  {
-    value: "krungthai",
-    label: "ธนาคารกรุงไทย",
-  },
-];
 const topdestination = [
   { place: "วัดพระแก้ว" },
   { place: "อยุธยา" },
@@ -107,22 +108,10 @@ const topdestination = [
   { place: "ตลาดนัดวังหลัง" },
 ];
 
-const checkNumberOnly = /[0-9]+$/;
-
 moment.locale("th");
-
 
 const TourForm = (props) => {
   const classes = useStyles();
-  const dispatch = useDispatch()
-  const tour = useSelector(state => state.tour.tour)
-
-  useEffect(() => {
-      let id = new URLSearchParams(props.location.search).get("tour")
-
-      dispatch(fetchTour(id))
-  },[dispatch,props.location.search])
-
   const {
     values,
     touched,
@@ -248,96 +237,19 @@ const TourForm = (props) => {
                   )}
                 </Grid>
                 <Grid item xs={12} md={6}>
-                  <Grid container alignItems="flex-end" spacing={1}>
-                    <Grid item>
-                    <FormControlLabel
-                      control={<Field 
-                        name="price"
-                        type="checkbox"
-                        component={Checkbox}
-                        value="0"
-                        color="primary"
-                      />}
-                      label="ฟรี"
-                    />
-                    </Grid>
-                    <Grid item>
-                      <Field 
-                        name="free"
-                        type="checkbox"
-                        component={Checkbox}
-                        value="0"
-                        color="primary"
-                      />
-                    </Grid>
-                    <Grid item xs>
                       <TextField
                         fullWidth
                         id="price"
                         name="price"
-                        label="ค่ามัดจำ"
+                        label="ค่าใช้จ่าย"
                         value={values.price}
                         onChange={handleChange}
                         error={touched.price && errors.price ? true : false}
+                        helperText="ถ้าไม่มีค่าใช้จ่ายใส่ 0"
                       />
-                    </Grid>
-                  </Grid>
                   {touched.price && errors.price && (
                         <p className={classes.errorMessage}>{errors.price}</p>
                       )}
-                </Grid>
-                <Grid item xs={12} md={4}>
-                  <FormControl
-                    variant="outlined"
-                    fullWidth
-                    error={touched.bank && errors.bank ? true : false}
-                  >
-                    <InputLabel id="select-label-bank">ธนาคาร:</InputLabel>
-                    <Select
-                      id="bank"
-                      name="bank"
-                      label="ธนาคาร:"
-                      value={values.bank}
-                      onChange={handleChange("bank")}
-                    >
-                      {bankCategory.map((option) => (
-                        <MenuItem key={option.value} value={option.value}>
-                          {option.label}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                    {touched.bank && errors.bank && (
-                      <p className={classes.errorMessage}>{errors.bank}</p>
-                    )}
-                  </FormControl>
-                </Grid>
-                <Grid item xs={12} md={4}>
-                  <TextField
-                    id="accno"
-                    name="accno"
-                    label="หมายเลขบัญชี"
-                    value={values.accno}
-                    onChange={handleChange}
-                    error={touched.accno && errors.accno ? true : false}
-                    fullWidth
-                  />
-                  {touched.accno && errors.accno && (
-                    <p className={classes.errorMessage}> {errors.accno} </p>
-                  )}
-                </Grid>
-                <Grid item xs={12} md={4}>
-                  <TextField
-                    id="accname"
-                    name="accname"
-                    label="ชื่อบัญชี"
-                    value={values.accname}
-                    onChange={handleChange}
-                    fullWidth
-                    error={touched.accname && errors.accname ? true : false}
-                  />
-                  {touched.accname && errors.accname && (
-                    <p className={classes.errorMessage}>{errors.accname}</p>
-                  )}
                 </Grid>
                 <MuiPickersUtilsProvider
                   libInstance={moment}
@@ -401,12 +313,13 @@ const TourForm = (props) => {
                 </Grid>
                 <Grid container item xs={12}>
                   <Button
+                    disabled={isSubmitting}
                     variant="contained"
                     type="submit"
                     color="primary"
                     fullWidth
                   >
-                    Edit
+                    แก้ไขทัวร์
                   </Button>
                 </Grid>
               </Grid>
@@ -419,7 +332,6 @@ const TourForm = (props) => {
 };
 
 const form = withFormik({
-  enableReinitialize: true,
   mapPropsToValues: ({
     picture,
     tourname,
@@ -428,63 +340,82 @@ const form = withFormik({
     destination,
     person,
     price,
-    bank,
     startDate,
-    accname,
     endDate,
-    accno,
   }) => {
     return {
       picture: picture || "",
       tourname: tourname || "",
       category: category || "",
       description: description || "",
-      destination: [] || "",
+      destination: [],
       person: person || "",
       price: price || "",
-      bank: bank || "",
       startDate: startDate || null,
-      accname: accname || "",
       endDate: endDate || null,
-      accno: accno || "",
     };
   },
   validationSchema: yup.object().shape({
     tourname: yup
       .string()
       .required("This field is required")
-      .min(5, "Please enter at least 5 characters"),
+      .min(5, "Please enter at least 5 characters")
+	    .max(200, "Please Enter less then 200 letters"),
+	  
     price: yup
       .string()
       .required("This field is required")
-      .matches(/[0-9]+$/, "Please enter only number"),
+      .matches(/[0-9]+$/, "Please enter only number")
+      .max(6, "Please enter at least 6 characters"),
     person: yup
       .string()
       .required("This field is required")
-      .matches(/[0-9]+$/, "Please enter only number"),
+      .matches(/[0-9]+$/, "Please enter only number")
+      .max(4, "Please enter at least 4 characters"),
+
     description: yup
       .string()
       .required("This field is required")
-      .min(10, "Please enter at least 10 characters"),
-    accname: yup.string().required("This fileld is required"),
-    accno: yup
-      .string()
-      .required("This field is required")
-      .matches(checkNumberOnly, "Pleaase enter only number")
-      .min(10, "Please enter 10 digit")
-      .max(12, "Please enter 10 digit"),
+      .min(10, "Please enter at least 10 characters")
+	    .max(1000, "Please Enter less then 1000 letters"),
     category: yup.string().required("This field is required"),
-    bank: yup.string().required("This field is required"),
     startDate: yup.date().required("This field is required").nullable(),
     endDate: yup.date().min(yup.ref('startDate'),"วันเวลาจบต้องมากกว่าวันเวลาเริ่ม").required("This field is required").nullable(),
     picture: yup.string().required("This field is required"),
     destination: yup.string().required("This field is required"),
   }),
-  handleSubmit: (values, { props, setFieldValue, setSubmitting }) => {
+  handleSubmit: async (values, { props, setFieldValue, setSubmitting }) => {
     // submit to the server
     setSubmitting(true);
     setFieldValue(values);
-    props.dispatch(addTour(values))
+    const destinationID = []
+    await values.destination.forEach((value) => {
+        Axios.get(`https://api.19991999.xyz/places/?name=${value}`, {headers: authHeader()})
+        .then(res => {
+          if (res.data === null) {
+            Axios.post('https://api.19991999.xyz/places/', { name: value, lat: 0, lon: 0 }, {headers: authHeader()})
+            .then(res => {
+              console.log(res.data)
+              destinationID.push(res.data.id)
+              console.log(destinationID)
+            })
+            .catch(err => {
+              console.log(err)
+            })
+          }
+          else {
+            destinationID.push(res.data[0].id)
+            console.log(destinationID)
+          }
+          
+        })
+        .then(() => {
+            props.dispatch(addTour(values, destinationID))
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    })
     console.log(values)
   },
 })(TourForm);

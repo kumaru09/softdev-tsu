@@ -8,6 +8,7 @@ import moment from 'moment'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { history } from '../helpers/history'
+import PeopleIcon from '@material-ui/icons/People';
 
 const useStyle = makeStyles((theme) => ({
     typography: {
@@ -48,15 +49,19 @@ const Info = ({ tour, addTran, ownerTour }) => {
                     {"เวลา: "+moment(tour.first_day).format('LT')+" - "+moment(tour.last_day).format('LT')}
                 </Typography>
                 <Typography className={classes.typography} style={{display: 'inline'}} gutterBottom>
-                <LocationOnIcon fontSize="small" />
+                <LocationOnIcon fontSize="small" / >
                     {"สถานที่: "}
                 </Typography>
                 <Grid container wrap="wrap" className={classes.root}>
                 {tour.list && tour.list.map((list) => (<Chip key={list} label={list} />))}
                 </Grid>
-                <Typography className={classes.typography}>
+                <Typography className={classes.typography} gutterBottom>
                 <AttachMoneyIcon fontSize="small" />
                     {"ค่าใช้จ่าย: "}{tour.price ? tour.price : "FREE"}
+                </Typography>
+                <Typography className={classes.typography} gutterBottom>
+                    <PeopleIcon fontSize="small" />
+                    {"จำนานคนที่เข้าร่วมแล้ว: "}{tour.confirm+"/"+tour.max_member}
                 </Typography>
             </CardContent> 
             <CardActions>
