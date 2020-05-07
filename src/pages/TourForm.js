@@ -442,7 +442,7 @@ const form = withFormik({
       .string()
       .required("This field is required")
       .min(5, "Please enter at least 5 characters")
-	  .max(50, "Please Enter less then 50 letters"),
+	  .max(200, "Please Enter less then 200 letters"),
 	  
     price: yup
       .string()
@@ -456,7 +456,7 @@ const form = withFormik({
       .string()
       .required("This field is required")
       .min(10, "Please enter at least 10 characters")
-	  .max(100, "Please Enter less then 100 letters"),
+	  .max(1000, "Please Enter less then 1000 letters"),
     accname: yup.string().required("This fileld is required"),
     accno: yup
       .string()

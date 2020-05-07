@@ -13,6 +13,11 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  CardContent,
+  List,
+  CardHeader,
+  Card,
+  Typography,
 } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import { Link } from "react-router-dom";
@@ -40,21 +45,29 @@ const useStyle = makeStyles((theme) => ({
   formcontrol: {
     width: "40%",
   },
+  root: {
+    marginTop: "2rem",
+  },
+  header: {
+    backgroundColor: theme.palette.secondary.light,
+    color: 'white'
+  },
 }));
 const ToursPage = ({ location }) => {
   const classes = useState()
   const tours = useSelector((state) => state.tours.tours);
   const dispatch = useDispatch();
   const [input, setInput] = useState("");
+  const search = new URLSearchParams(location.search).get("search");
 
   useEffect(() => {
-    const search = new URLSearchParams(location.search).get("search");
+    let search = new URLSearchParams(location.search).get("search");
 
     dispatch(searchTours(`?search=${search}`));
   }, [dispatch, location]);
 
   const renderSeacrh = () => {
-    if (!tours) return <p>ไม่ค้นพบทัวร์ที่ต้องการค้นหา...</p>;
+    if (!tours) return <Typography>ไม่ค้นพบทัวร์ที่ต้องการค้นหา...</Typography>;
 
     return tours.map((tour) => <Tour key={tour.id} tour={tour} />);
   };
@@ -96,8 +109,24 @@ const ToursPage = ({ location }) => {
             ค้นหา
           </Button>
         </Grid>
-        <Grid item>{renderSeacrh()}</Grid>
       </Grid>
+      <Grid container direction="column" className={classes.root}>
+            <Card>
+            <Grid item xs>
+            <CardHeader
+              className={classes.header}
+              title={<Typography variant="h5">ค้นหา: {search}</Typography>}
+            />
+            </Grid>
+            <Grid item xs>
+            <CardContent>
+            <List>
+              {renderSeacrh()}
+            </List>
+            </CardContent>
+            </Grid>
+            </Card>
+            </Grid>
     </Container>
   );
 };

@@ -6,6 +6,7 @@ import {
   Card,
   makeStyles,
   CardHeader,
+  CardContent,
 } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { searchTours, toursSelector } from "../slices/tours";
@@ -18,9 +19,7 @@ const useStyles = makeStyles((theme) => ({
   },
   header: {
     backgroundColor: theme.palette.secondary.light,
-  },
-  avatar: {
-    backgroundColor: theme.palette.primary.main,
+    color: 'white'
   },
 }));
 
@@ -37,8 +36,9 @@ const MyTourPage = () => {
   const renderMytour = () => {
     if (loading) return "";
     if (hasErrors) return <p>เกิดข้อผิดพลาดบางอย่าง...</p>;
+    if (!tours) return <Grid item xs><Typography variant="body1">ไม่มีทัวร์ที่สร้างไว้...</Typography></Grid>
 
-    return tours.map((tour) => <Tour key={tour.id} tour={tour} />);
+    return tours && tours.map((tour) => <Tour key={tour.id} tour={tour} />);
   };
 
   return (
@@ -52,9 +52,11 @@ const MyTourPage = () => {
             />
           </Grid>
           <Grid item xs>
+          <CardContent>
             <Grid container spacing={1} direction="column">
               {renderMytour()}
             </Grid>
+            </CardContent>
           </Grid>
         </Card>
       </Grid>

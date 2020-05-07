@@ -33,21 +33,20 @@ const useStyle = makeStyles((theme) => ({
   },
 
   header: {
-    position: "absolute",
+    position: "relative",
     backgroundImage: "url(https://source.unsplash.com/random)",
     backgroundRepeat: "no-repeat",
     backgroundPosition: "center",
     backgroundSize: "cover",
     width: "100%",
+    height: '30vw',
+    minHeight: '300px'
   },
 
   paper: {
     padding: "1rem",
     [theme.breakpoints.up("md")]: {
-      width: "20rem",
-    },
-    [theme.breakpoints.down("xs")]: {
-      marginTop: "1rem",
+      width: "30rem",
     },
     marginTop: "5rem",
     margin: "auto",

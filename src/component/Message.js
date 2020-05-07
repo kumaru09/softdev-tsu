@@ -22,7 +22,7 @@ const Message = ({ message, name }) => {
             <Fragment>
               {message.me ? "คุณ " : `${name} `}
               <Typography component="span" variant="caption">
-                {moment(message.time).calendar()}
+                {moment(message.time).utc().calendar()}
               </Typography>
             </Fragment>
           }

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { Container, List, Typography, Grid, CardHeader, makeStyles, CardContent, Card } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchAllFavorite } from '../slices/favorite'
+import { fetchAllFavorite, favoriteSelector } from '../slices/favorite'
 import Favorite from '../component/Favorite'
 import Axios from 'axios'
 import { authHeader } from '../helpers/auth-header'
@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 const FavoritePage = () => {
     const classes = useStyles()
     const dispatch = useDispatch()
-    const favorites = useSelector(state => state.favorite.favorites)
+    const { favorites, loading, hasErrors } = useSelector(favoriteSelector)
 
     useEffect(() => {
         dispatch(fetchAllFavorite())
@@ -33,6 +33,14 @@ const FavoritePage = () => {
         .catch(err => {
             console.log(err)
         })
+    }
+
+    const renderFavorite = () => {
+        if (loading) return <Typography>กำลังโหลดข้อมูล...</Typography>
+        if (hasErrors) return <Typography>เกิดจ้อผิดพลาดบางอย่าง...</Typography>
+        if (!favorites) return <Typography>ไม่มีรายการโปรด...</Typography>
+
+        return favorites && favorites.map((favorite) => (<Favorite key={favorite.tour} name={favorite} deleteFavorite={deleteFavorite} />))
     }
 
 
@@ -49,7 +57,7 @@ const FavoritePage = () => {
             <Grid item xs>
             <CardContent>
             <List>
-                {favorites && favorites.map((favorite) => (<Favorite key={favorite.tour} name={favorite} deleteFavorite={deleteFavorite} />))}
+                {renderFavorite()}
             </List>
             </CardContent>
             </Grid>

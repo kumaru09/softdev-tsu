@@ -111,6 +111,7 @@ const checkNumberOnly = /[0-9]+$/;
 
 moment.locale("th");
 
+
 const TourForm = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch()
@@ -132,8 +133,6 @@ const TourForm = (props) => {
     handleSubmit,
     handleReset,
   } = props;
-
-  
 
   return (
     <Container maxWidth="md">
@@ -420,6 +419,7 @@ const TourForm = (props) => {
 };
 
 const form = withFormik({
+  enableReinitialize: true,
   mapPropsToValues: ({
     picture,
     tourname,

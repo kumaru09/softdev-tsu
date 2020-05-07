@@ -1,10 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchMessage } from "../slices/message";
 import {
   Container,
   Grid,
-  TextField,
   makeStyles,
   CardHeader,
   Avatar,
@@ -14,14 +13,14 @@ import {
   CardActions,
   Divider,
   FormControl,
-  InputLabel,
-  Input,
   InputAdornment,
   IconButton,
   OutlinedInput,
 } from "@material-ui/core";
 import Message from "../component/Message";
 import SendIcon from "@material-ui/icons/Send";
+import Axios from "axios";
+import { authHeader } from "../helpers/auth-header";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -39,6 +38,7 @@ const MessagePage = ({ match, location }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const name = new URLSearchParams(location.search).get("name");
+  const [input, setInput] = useState('')
 
   useEffect(() => {
     const { contact } = match.params;
@@ -49,7 +49,7 @@ const MessagePage = ({ match, location }) => {
   const chat = useSelector((state) => state.message.message);
 
   const renderMessage = () => {
-    if (!chat) return <p>ไม่มีข้อความ...</p>;
+    if (!chat) return <Typography>ไม่มีข้อความ...</Typography>;
 
     return chat.map((message) => (
       <Message
@@ -59,6 +59,18 @@ const MessagePage = ({ match, location }) => {
       />
     ));
   };
+
+  async function addMessage(input) {
+    let { contact } = match.params;
+    Axios.post(`https://api.19991999.xyz/messages/${contact}`,{ message: input},{headers: authHeader()})
+    .then(res => {
+      console.log(res)
+      dispatch(fetchMessage(contact));
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  }
 
   return (
     <Container maxWidth="md">
@@ -83,9 +95,11 @@ const MessagePage = ({ match, location }) => {
                 <OutlinedInput
                     placeholder="พิมพ์ข้อความ.."
                   id="sendicon"
+                  value={input}
+                  onChange={(e) => {setInput(e.target.value)}}
                   endAdornment={
                     <InputAdornment position="end">
-                    <IconButton>
+                    <IconButton onClick={() => addMessage(input)}>
                       <SendIcon />
                     </IconButton>
                     </InputAdornment>

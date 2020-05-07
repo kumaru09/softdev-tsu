@@ -21,7 +21,7 @@ export const Messages = ({ message }) => (
           <Fragment>
             {message.name+" "}
             <Typography component="span" variant="caption">
-              {moment(message.time).calendar()}
+              {moment(message.time).utc().calendar()}
             </Typography>
           </Fragment>
         }

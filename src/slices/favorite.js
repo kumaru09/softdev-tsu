@@ -29,6 +29,7 @@ const favoriteSlice = createSlice({
 })
 
 export const { getFavorite, getFavoriteSuccess, getFavoriteFailure } = favoriteSlice.actions
+export const favoriteSelector = state => state.favorite
 export default favoriteSlice.reducer
 
 export function fetchFavorite(id) {

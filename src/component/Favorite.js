@@ -1,11 +1,12 @@
 import React, { Fragment } from 'react'
 import { ListItem, ListItemText, ListItemSecondaryAction, IconButton, Divider } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete'
+import { Link } from 'react-router-dom'
 
 const Favorite = props => {
     return (
         <Fragment>
-           <ListItem>
+           <ListItem component={Link} to={`/tours/${props.name.tour}`}>
                <ListItemText
                 primary={props.name.name}
                 />

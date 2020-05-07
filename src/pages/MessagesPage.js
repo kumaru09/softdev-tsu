@@ -34,7 +34,7 @@ const MessagePage = () => {
   const messages = useSelector((state) => state.messages.messages);
 
   const renderMessages = () => {
-    if (!messages) return <p>ไม่มีข้อความ...</p>;
+    if (!messages) return <Typography>ไม่มีข้อความ...</Typography>;
 
     return messages.map((message) => (
       <Messages key={message.contact} message={message} />

@@ -1,4 +1,4 @@
-import React, { useEffect, Fragment } from "react";
+import React, { useEffect, Fragment, useState } from "react";
 import {
   Container,
   Typography,
@@ -34,13 +34,13 @@ import Comment from "../component/Comment";
 import SendIcon from "@material-ui/icons/Send";
 import { fetchReview } from "../slices/review";
 import Rating from "@material-ui/lab/Rating";
+import Axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   img: {
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
-    backgroundPosition: "center",
-    backgroundImage: "url(https://placekitten.com/600/750)",
+    backgroundPosition: "center"
   },
   media: {
     height: 0,
@@ -67,7 +67,8 @@ const TourPage = ({ match }) => {
   } = useSelector(commentsSelector);
   const review = useSelector((state) => state.review.review);
   const transcripts = useSelector((state) => state.transcript.transcript);
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
+  const [input, setInput] = useState('')
 
   useEffect(() => {
     const { id } = match.params;
@@ -137,6 +138,19 @@ const TourPage = ({ match }) => {
     }
   }
 
+  async function addReview(input, value) {
+    let {id} = match.params
+    Axios.post(`https://api.19991999.xyz/reviews/${id}`,{comment: input, ratting: value*20},{headers: authHeader()})
+    .then(res => {
+      console.log(res)
+      dispatch(fetchComments(id));
+      dispatch(fetchReview(id))
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  }
+
   const ownerTour = () => {
     if (localStorage.getItem("user") === null) return true
     else {
@@ -190,7 +204,7 @@ const TourPage = ({ match }) => {
           <Grid item xs={12} md={8}>
             <CardMedia
               className={classes.media}
-              image="https://placekitten.com/600/750"
+              image={`https://api.19991999.xyz/pic/${tour.pic}`}
             />
           </Grid>
           <Grid item xs={12} md={4}>
@@ -214,7 +228,9 @@ const TourPage = ({ match }) => {
                   <ListItemAvatar>
                     <Avatar alt="">{tour.g_name && tour.g_name[0]}</Avatar>
                   </ListItemAvatar>
-                  <ListItemText />
+                  <ListItemText
+                    primary={tour.g_name+" "+tour.g_surname}
+                   />
                 </ListItem>
               </List>
             </Grid>
@@ -229,15 +245,17 @@ const TourPage = ({ match }) => {
           <Grid item xs>
             <List>{renderComments()}</List>
           </Grid>
-          {(ownerTour() || !review) && transcripts.confirm ? (
+          {(ownerTour() && !review) ? (
             <Grid item xs>
               <FormControl fullWidth variant="outlined">
                 <OutlinedInput
                   placeholder="พิมพ์รีวิว.."
                   id="sendicon"
+                  value={input}
+                  onChange={(e) => {setInput(e.target.value)}}
                   endAdornment={
                     <InputAdornment position="end">
-                      <IconButton>
+                      <IconButton onClick={() => {addReview(input, value)}}>
                         <SendIcon />
                       </IconButton>
                     </InputAdornment>

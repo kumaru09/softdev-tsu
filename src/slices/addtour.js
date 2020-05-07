@@ -28,24 +28,34 @@ export function addTour(input) {
     let fromdata = new FormData()
     fromdata.append("pic",input.picture)
 
-    let tour = {
-        name: input.tourname,
-        description: input.description,
-        category: input.category,
-        max_member: input.person,
-        first_day: input.startDate,
-        last_day: input.endDate,
-        price: input.price,
-        status: 1,
-    }
-
     return async dispatch => {
         dispatch(ADDTOUR_REQUEST())
-        
-        Axios.post('https://api.19991999.xyz/tours/',tour,{ headers: authHeader(), data: fromdata})
-        .then(res => {
-            console.log(res)
-        })
+
+        Axios.post('https://api.19991999.xyz/upload',fromdata,{headers: authHeader()})
+        .then(res => 
+            {console.log(res)
+                let tour = {
+                    name: input.tourname,
+                    description: input.description,
+                    category: input.category,
+                    max_member: input.person,
+                    first_day: input.startDate,
+                    last_day: input.endDate,
+                    price: input.price,
+                    status: 1,
+                    list: input.destination,
+                    pic: res.data.file
+                }
+            console.log(tour)
+            Axios.post('https://api.19991999.xyz/tours/',tour,{ headers: authHeader()})
+            .then(res => {
+                console.log(res)
+                history.push(`/tours/${res.data.id}`)
+            })
+            .catch(err => {
+                console.log(err)
+            })}
+        )
         .catch(err => {
             console.log(err)
         })
