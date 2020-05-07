@@ -368,9 +368,9 @@ const form = withFormik({
       .matches(/[0-9]+$/, "Please enter only number")
       .max(6, "Please enter at least 6 characters"),
     person: yup
-      .string()
+      .number()
+      .moreThan(0, "Please enter more than 0")
       .required("This field is required")
-      .matches(/[0-9]+$/, "Please enter only number")
       .max(4, "Please enter at least 4 characters"),
 
     description: yup

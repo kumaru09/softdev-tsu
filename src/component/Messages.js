@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 
 export const Messages = ({ message }) => (
   <Fragment>
-    <ListItem alignItems="flex-start" component={Link} to={`/messages/${message.contact}?name=${message.name}`}>
+    <ListItem alignItems="flex-start" component={Link} to={`/messages/${message.contact}?name=${message.name}`} style={{color: '#000'}}>
       <ListItemAvatar>
         <Avatar alt="">{message.name[0]}</Avatar>
       </ListItemAvatar>

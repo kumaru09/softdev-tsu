@@ -176,6 +176,7 @@ const TourPage = ({ match }) => {
           </Grid>
           <Grid item>
             {ownerTour() ? (
+              
               <Button
                 disabled={favoriteState}
                 fullWidth

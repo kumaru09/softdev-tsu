@@ -65,7 +65,8 @@ export function fetchAllTranscript() {
     })
       .then((res) => {
           console.log(res.data)
-        dispatch(getTranscriptSuccess(res.data));
+          if (res.data === null) dispatch(getTranscriptSuccess([]))
+          else dispatch(getTranscriptSuccess(res.data))
       })
       .catch((err) => {
         console.log(err);

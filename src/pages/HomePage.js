@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import CardTrip from "../component/CardTrip";
 import {
   Container,
   Typography,
@@ -9,29 +8,25 @@ import {
   IconButton,
   makeStyles,
   Button,
-  useTheme,
   AppBar,
   Tabs,
   Tab,
   Box,
   List,
   Card,
-  CardHeader,
   CardContent,
 } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
-import { searchTours } from "../slices/tours";
+import { searchTours, toursSelector } from "../slices/tours";
 import { Tour } from "../component/Tour";
 import SearchIcon from "@material-ui/icons/Search";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-import SwipeableViews from "react-swipeable-views";
 
 const useStyle = makeStyles((theme) => ({
   iconButton: {
     padding: 10,
   },
-
   header: {
     position: "relative",
     backgroundImage: "url(https://source.unsplash.com/random)",
@@ -39,10 +34,9 @@ const useStyle = makeStyles((theme) => ({
     backgroundPosition: "center",
     backgroundSize: "cover",
     width: "100%",
-    height: '30vw',
-    minHeight: '300px'
+    height: "30vw",
+    minHeight: "300px",
   },
-
   paper: {
     padding: "1rem",
     [theme.breakpoints.up("md")]: {
@@ -51,18 +45,13 @@ const useStyle = makeStyles((theme) => ({
     marginTop: "5rem",
     margin: "auto",
   },
-
-  tabPanelLayout: {
-    backgroundColor: "#ffffff",
-    width: 1000,
-  },
   root: {
-    marginTop: "2rem",
-    marginBottom: "2rem"
+    marginTop: "4rem",
+    marginBottom: "2rem",
   },
   card: {
     backgroundColor: theme.palette.secondary.light,
-    color: 'white'
+    color: "white",
   },
 }));
 
@@ -78,8 +67,8 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box p={3}>
-          <Typography>{children}</Typography>
+        <Box>
+          {children}
         </Box>
       )}
     </div>
@@ -103,23 +92,28 @@ const HomePage = () => {
   const classes = useStyle();
   const dispatch = useDispatch();
   const [input, setInput] = useState("");
-
-  const theme = useTheme();
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const handleChangeIndex = (index) => {
-    setValue(index);
-  };
-
   useEffect(() => {
-    dispatch(searchTours(""));
+    dispatch(searchTours("?order=id&desc=true"));
   }, [dispatch]);
 
-  const tours = useSelector((state) => state.tours.tours);
+  const{ tours, loading, hasErrors }= useSelector(toursSelector);
+
+  const renderTours = () => {
+    if (loading) return <Typography>กำลังโหลดข้อมูล...</Typography>
+    if (hasErrors) return <Typography>เกิดข้อผิดพลาดบางอย่าง...</Typography>
+
+    return tours && tours.map((tour) => <Tour key={tour.id} tour={tour} />)
+  }
+
+  const tabTour = (search) => {
+    dispatch(searchTours(search))
+  }
 
   return (
     <div
@@ -163,77 +157,43 @@ const HomePage = () => {
             </Paper>
           </Grid>
         </Grid>
-        <div style={{ marginTop: "3rem" }}>
-          <Typography variant="h4" gutterBottom>
-            {"ทริปแนะนำ"}
-          </Typography>
-          <Grid container spacing={3}>
-            <div className={classes.tabPanelLayout}>
-              <AppBar position="static" color="default">
-                <Tabs
-                  value={value}
-                  onChange={handleChange}
-                  indicatorColor="primary"
-                  textColor="primary"
-                  variant="fullWidth"
-                  aria-label="full width tab recommended trip"
-                >
-                  <Tab label="History" {...allyProps(0)} />
-                  <Tab label="Relax" {...allyProps(1)} />
-                  <Tab label="Temple" {...allyProps(2)} />
-                </Tabs>
-              </AppBar>
-              <SwipeableViews
-                axis={theme.direction === "rtl" ? "x-reverse" : "x"}
-                index={value}
-                onChangeIndex={handleChangeIndex}
-              >
-                <TabPanel value={value} index={0} dir={theme.direction}>
-                  <Grid container spacing={3}>
-                    <CardTrip />
-                    <CardTrip />
-                    <CardTrip />
-                  </Grid>
-                </TabPanel>
-                <TabPanel value={value} index={1} dir={theme.direction}>
-                  <Grid container spacing={3}>
-                    <CardTrip />
-                    <CardTrip />
-                    <CardTrip />
-                  </Grid>
-                </TabPanel>
-                <TabPanel value={value} index={2} dir={theme.direction}>
-                  <Grid container spacing={3}>
-                    <CardTrip />
-                    <CardTrip />
-                    <CardTrip />
-                  </Grid>
-                </TabPanel>
-              </SwipeableViews>
-            </div>
-          </Grid>
-        </div>
-        <Container maxWidth="md">
-          <Grid container direction="column" className={classes.root}>
-            <Card>
-              <Grid item xs>
-                <CardHeader
-                  className={classes.card}
-                  title={<Typography variant="h5">ทัวร์ยอดนิยม</Typography>}
-                />
-              </Grid>
-              <Grid item xs>
-                <CardContent>
-                  <List>
-                    {tours &&
-                      tours.map((tour) => <Tour key={tour.id} tour={tour} />)}
-                  </List>
-                </CardContent>
-              </Grid>
-            </Card>
-          </Grid>
         </Container>
-      </Container>
+        <Container maxWidth="md">
+          <Card component="div" className={classes.root}>
+            <AppBar position="static">
+              <Tabs
+                value={value}
+                onChange={handleChange}
+                aria-label="simple tabs example"
+              >
+                <Tab onClick={() => tabTour("?order=id&desc=true")} label="ทัวร์ล่าสุด" {...allyProps(0)} />
+                <Tab onClick={() => tabTour("?order=favorite&desc=true")} label="ทัวร์ยอดนิยม" {...allyProps(1)} />
+                <Tab onClick={() => tabTour("?order=confirm&desc=true")} label="ทัวร์ฮิต" {...allyProps(2)} />
+              </Tabs>
+            </AppBar>
+            <TabPanel value={value} index={0}>
+            <CardContent>
+                  <List>
+                  {renderTours()}
+                  </List>
+            </CardContent>
+            </TabPanel>
+            <TabPanel value={value} index={1}>
+            <CardContent>
+                  <List>
+                  {renderTours()}
+                  </List>
+            </CardContent>
+            </TabPanel>
+            <TabPanel value={value} index={2}>
+            <CardContent>
+                  <List>
+                  {renderTours()}
+                  </List>
+            </CardContent>
+            </TabPanel>
+          </Card>
+        </Container>
     </div>
   );
 };

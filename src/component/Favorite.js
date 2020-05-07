@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 const Favorite = props => {
     return (
         <Fragment>
-           <ListItem component={Link} to={`/tours/${props.name.tour}`}>
+           <ListItem component={Link} to={`/tours/${props.name.tour}`} style={{color: '#000'}}>
                <ListItemText
                 primary={props.name.name}
                 />

@@ -22,9 +22,11 @@ const loginSlice = createSlice({
             state.loggingin = false
             state.isAuth = true
             state.user = payload
+            state.hasErrors = false
         },
         LOGIN_FAILURE: state => {
             state.loggingin = false
+            state.hasErrors = true
         },
         LOGOUT: state => {
             state.isAuth = false

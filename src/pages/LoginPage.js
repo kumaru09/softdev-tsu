@@ -3,7 +3,10 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../slices/login";
 import { Link } from "react-router-dom";
-import { Container, Typography, TextField, Button, Grid, makeStyles } from "@material-ui/core";
+import { Container, Typography, TextField, Button, Grid, makeStyles, Box } from "@material-ui/core";
+import Alert from '@material-ui/lab/Alert';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { spacing } from '@material-ui/system';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -28,6 +31,7 @@ const LoginPage = () => {
   const [input, setInput] = useState(initialFromState)
   const [submitted, setSubmitted] = useState(false)
   const loggingin = useSelector((state) => state.login.loggingin)
+  const hasErrors = useSelector(state => state.login.hasErrors)
 
   const dispatch = useDispatch()
 
@@ -46,6 +50,7 @@ const LoginPage = () => {
 
   return (
     <Container component="main" maxWidth="xs">
+    {hasErrors && <Alert severity="error">This is an error alert — check it out!</Alert>}
     <div className={classes.paper}>
       <Typography variant="h4" gutterBottom>Login</Typography>
         <form onSubmit={handleSumbit} className={classes.form}>
@@ -81,7 +86,7 @@ const LoginPage = () => {
               color="primary"
               className={classes.submit}
             >
-              Login
+              { submitted && loggingin && <CircularProgress color="secondary" size='1.5rem' />}Login
             </Button>
             <Grid container>
             <Grid item md={5} xs={12}>

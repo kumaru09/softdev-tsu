@@ -48,8 +48,8 @@ const Info = ({ tour, addTran, ownerTour }) => {
                 <AccessTimeIcon fontSize="small" />
                     {"เวลา: "+moment(tour.first_day).format('LT')+" - "+moment(tour.last_day).format('LT')}
                 </Typography>
-                <Typography className={classes.typography} style={{display: 'inline'}} gutterBottom>
-                <LocationOnIcon fontSize="small" / >
+                <Typography className={classes.typography} style={{display: 'inline'}} gutterBottom >
+                    <LocationOnIcon fontSize="small" />
                     {"สถานที่: "}
                 </Typography>
                 <Grid container wrap="wrap" className={classes.root}>
@@ -67,10 +67,11 @@ const Info = ({ tour, addTran, ownerTour }) => {
             <CardActions>
            { ownerTour() ?
                 <Fragment>
-                {!hasTranscript ? <Button color="secondary" fullWidth variant="contained" onClick={() =>{ 
+                {!hasTranscript && (tour.max_member !== tour.confirm) ? <Button color="secondary" fullWidth variant="contained" onClick={() =>{ 
                     if(localStorage.getItem("user") === null) history.push('/login')
                     else addTran()
                     }}>เข้าร่วมทัวร์</Button> : "" }
+                {!hasTranscript && (tour.max_member === tour.confirm) ? <Button disabled color="secondary" fullWidth variant="contained">{"ทัวร์เต็ม"}</Button> : "" }
                 {hasTranscript && !transcript.confirm && !transcript.time ? <Button color="secondary" component={Link} to={`/createtranscript?tour=${transcript.tour}`} fullWidth variant="contained">แจ้งโอนเงิน</Button> : "" }
                 {hasTranscript && transcript.time && !transcript.confirm ? <Button disabled color="secondary" fullWidth variant="contained">{"รอการตรวจสอบ"}</Button> : ""}
                 {hasTranscript && transcript.confirm ? <Button disabled color="secondary" fullWidth variant="contained">{"เข้าร่วมเรียบร้อย"}</Button> : ""}</Fragment>
