@@ -4,21 +4,21 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import { Link } from 'react-router-dom'
 
 const Favorite = props => {
-    return (
-        <Fragment>
-           <ListItem component={Link} to={`/tours/${props.name.tour}`} style={{color: '#000'}}>
-               <ListItemText
-                primary={props.name.name}
-                />
-                <ListItemSecondaryAction>
-                    <IconButton edge="end" onClick={() => props.deleteFavorite(props.name.tour)}>
-                        <DeleteIcon />
-                    </IconButton>
-                </ListItemSecondaryAction>
-           </ListItem>
-           <Divider variant="fullWidth" />
-        </Fragment>
-    )
+  return (
+    <Fragment>
+      <ListItem component={Link} to={`/tours/${props.name.tour}`} style={{ color: '#000' }}>
+        <ListItemText
+          primary={props.name.name}
+        />
+        <ListItemSecondaryAction>
+          <IconButton edge="end" onClick={() => props.deleteFavorite(props.name.tour)}>
+            <DeleteIcon />
+          </IconButton>
+        </ListItemSecondaryAction>
+      </ListItem>
+      <Divider variant="fullWidth" />
+    </Fragment>
+  )
 }
 
 export default Favorite

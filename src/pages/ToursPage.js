@@ -7,7 +7,6 @@ import {
   IconButton,
   InputBase,
   Button,
-  Input,
   makeStyles,
   FormControl,
   InputLabel,
@@ -55,7 +54,7 @@ const useStyle = makeStyles((theme) => ({
 }));
 const ToursPage = ({ location }) => {
   const classes = useStyle()
-  const { tours, loading, hasErrors }= useSelector(toursSelector);
+  const { tours, loading, hasErrors } = useSelector(toursSelector);
   const dispatch = useDispatch();
   const [input, setInput] = useState("");
   const search = new URLSearchParams(location.search).get("search");
@@ -113,22 +112,22 @@ const ToursPage = ({ location }) => {
         </Grid>
       </Grid>
       <Grid container direction="column" className={classes.root}>
-            <Card>
-            <Grid item xs>
+        <Card>
+          <Grid item xs>
             <CardHeader
               className={classes.header}
               title={<Typography variant="h5">ค้นหา: {search}</Typography>}
             />
-            </Grid>
-            <Grid item xs>
+          </Grid>
+          <Grid item xs>
             <CardContent>
-            <List>
-              {renderSeacrh()}
-            </List>
+              <List>
+                {renderSeacrh()}
+              </List>
             </CardContent>
-            </Grid>
-            </Card>
-            </Grid>
+          </Grid>
+        </Card>
+      </Grid>
     </Container>
   );
 };

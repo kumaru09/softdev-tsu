@@ -30,12 +30,12 @@ const Transcripts = (props) => {
             <Fragment>
               {props.transcript.confirm ? "เข้าร่วมเรียบร้อย" : ""}
               {moment(props.transcript.time).format() === moment(0).format() ||
-              !props.transcript.time
+                !props.transcript.time
                 ? "รอการแจ้งโอน"
                 : ""}
               {moment(props.transcript.time).format() !== moment(0).format() &&
-              !props.transcript.confirm &&
-              props.transcript.time
+                !props.transcript.confirm &&
+                props.transcript.time
                 ? moment(props.transcript.time).format("L LT")
                 : ""}
             </Fragment>
@@ -43,8 +43,12 @@ const Transcripts = (props) => {
         />
         {!props.transcript.confirm && (
           <ListItemSecondaryAction>
-            <IconButton onClick={() => setOpen(true)}>
-                <ImageIcon />
+            <IconButton disabled={
+              !props.transcript.time ||
+              moment(props.transcript.time).format() === moment(0).format()
+            }
+              onClick={() => setOpen(true)}>
+              <ImageIcon />
             </IconButton>
             <IconButton
               disabled={
@@ -83,7 +87,7 @@ const Transcripts = (props) => {
         <DialogTitle id="alert-dialog-title">{"Transcript"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-              <img src={`https://api.19991999.xyz/pic/${props.transcript.file}`} alt="" />
+            <img src={`https://api.19991999.xyz/pic/${props.transcript.file}`} alt="" />
           </DialogContentText>
         </DialogContent>
       </Dialog>

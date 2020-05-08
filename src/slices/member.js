@@ -36,12 +36,12 @@ export function fetchMember(id) {
     dispatch(getMember())
 
     Axios.get(`https://api.19991999.xyz/members/${id}`, { headers: authHeader() })
-    .then(res => {
-      dispatch(getMemberSuccess(res.data))
-    })
-    .catch(err => {
-      console.log(err)
-      dispatch(getMemberFailure())
-    })
+      .then(res => {
+        dispatch(getMemberSuccess(res.data))
+      })
+      .catch(err => {
+        console.log(err)
+        dispatch(getMemberFailure())
+      })
   }
 }

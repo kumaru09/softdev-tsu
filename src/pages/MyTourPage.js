@@ -52,10 +52,10 @@ const MyTourPage = () => {
             />
           </Grid>
           <Grid item xs>
-          <CardContent>
-            <Grid container spacing={1} direction="column">
-              {renderMytour()}
-            </Grid>
+            <CardContent>
+              <Grid container spacing={1} direction="column">
+                {renderMytour()}
+              </Grid>
             </CardContent>
           </Grid>
         </Card>

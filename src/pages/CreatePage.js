@@ -5,26 +5,26 @@ import TourForm from './TourForm';
 import VerifyPage from './VerifyPage'
 
 const CreatePage = () => {
-    const dispatch = useDispatch()
-    const { member, loading, hasErrors }= useSelector(memberSelector)
-    useEffect(() => {
-        let user = JSON.parse(atob(localStorage.getItem("user").split('.')[1]))
+  const dispatch = useDispatch()
+  const { member, loading } = useSelector(memberSelector)
+  useEffect(() => {
+    let user = JSON.parse(atob(localStorage.getItem("user").split('.')[1]))
 
-        dispatch(fetchMember(user.user_id))
-    },[dispatch])
+    dispatch(fetchMember(user.user_id))
+  }, [dispatch])
 
-    const renderCreate = () => {
-        if (loading) return ""
-        if (member && !member.verify) return <VerifyPage />
+  const renderCreate = () => {
+    if (loading) return ""
+    if (member && !member.verify) return <VerifyPage />
 
-        return member.verify && <TourForm />
-    }
+    return member.verify && <TourForm />
+  }
 
-    return (
-        <Fragment>
-            {renderCreate()}
-        </Fragment>
-    )
+  return (
+    <Fragment>
+      {renderCreate()}
+    </Fragment>
+  )
 }
 
 export default CreatePage

@@ -39,14 +39,14 @@ export function fetchComments(id) {
   return async dispatch => {
     dispatch(getComments())
 
-    Axios.get(`https://api.19991999.xyz/tours/${id}/reviews`,{ headers: authHeader()})
-    .then((res) => {
+    Axios.get(`https://api.19991999.xyz/tours/${id}/reviews`, { headers: authHeader() })
+      .then((res) => {
         console.log(res)
         dispatch(getCommentsSuccess(res.data))
-    })
-    .catch((err) => {
+      })
+      .catch((err) => {
         console.log(err)
         dispatch(getCommentsFailure())
-    })
+      })
   }
 }

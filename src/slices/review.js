@@ -39,14 +39,14 @@ export function fetchReview(id) {
   return async dispatch => {
     dispatch(getreview())
 
-    Axios.get(`https://api.19991999.xyz/reviews/${id}`,{ headers: authHeader()})
-    .then((res) => {
+    Axios.get(`https://api.19991999.xyz/reviews/${id}`, { headers: authHeader() })
+      .then((res) => {
         console.log(res)
         dispatch(getreviewSuccess(res.data))
-    })
-    .catch((err) => {
+      })
+      .catch((err) => {
         console.log(err)
         dispatch(getreviewFailure())
-    })
+      })
   }
 }

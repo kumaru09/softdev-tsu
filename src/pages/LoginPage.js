@@ -3,10 +3,9 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../slices/login";
 import { Link } from "react-router-dom";
-import { Container, Typography, TextField, Button, Grid, makeStyles, Box } from "@material-ui/core";
+import { Container, Typography, TextField, Button, Grid, makeStyles } from "@material-ui/core";
 import Alert from '@material-ui/lab/Alert';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { spacing } from '@material-ui/system';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -50,22 +49,22 @@ const LoginPage = () => {
 
   return (
     <Container component="main" maxWidth="xs">
-    {hasErrors && <Alert severity="error">This is an error alert — check it out!</Alert>}
-    <div className={classes.paper}>
-      <Typography variant="h4" gutterBottom>Login</Typography>
+      {hasErrors && <Alert severity="error">This is an error alert — check it out!</Alert>}
+      <div className={classes.paper}>
+        <Typography variant="h4" gutterBottom>Login</Typography>
         <form onSubmit={handleSumbit} className={classes.form}>
-            <TextField 
-              fullWidth
-              required
-              variant="outlined"
-              margin="normal"
-              id="username"
-              label="username"
-              name="username"
-              onChange={handleInputChange}
-              defaultValue={input.username}
-            />
-            <Grid item xs>
+          <TextField
+            fullWidth
+            required
+            variant="outlined"
+            margin="normal"
+            id="username"
+            label="username"
+            name="username"
+            onChange={handleInputChange}
+            defaultValue={input.username}
+          />
+          <Grid item xs>
             <TextField
               required
               fullWidth
@@ -78,24 +77,24 @@ const LoginPage = () => {
               onChange={handleInputChange}
               defaultValue={input.password}
             />
-            </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
-              { submitted && loggingin && <CircularProgress color="secondary" size='1.5rem' />}Login
+          </Grid>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+          >
+            {submitted && loggingin && <CircularProgress color="secondary" size='1.5rem' />}Login
             </Button>
-            <Grid container>
+          <Grid container>
             <Grid item md={5} xs={12}>
-              <Link to="/" variant="body2" style={{textDecoration : 'none'}}>
+              <Link to="/" variant="body2" style={{ textDecoration: 'none' }}>
                 Forgot password?
               </Link>
             </Grid>
             <Grid item>
-              <Link to="/register" variant="body2" style={{textDecoration : 'none'}}>
+              <Link to="/register" variant="body2" style={{ textDecoration: 'none' }}>
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>

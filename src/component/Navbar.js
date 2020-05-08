@@ -61,7 +61,7 @@ const Navbar = () => {
       <Container maxWidth="md">
         <Toolbar>
           <Typography className={classes.logo}>
-            <Link to="/" style={{ textDecoration: 'none', color: 'black'}}>PI-THEIYW</Link>
+            <Link to="/" style={{ textDecoration: 'none', color: 'black' }}>PI-THEIYW</Link>
           </Typography>
           <div className={classes.sectionDesktop}>
             <Button

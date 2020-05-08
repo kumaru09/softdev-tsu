@@ -98,7 +98,6 @@ const TranscriptPage = (props) => {
     touched,
     errors,
     isSubmitting,
-    handleChange,
     handleSubmit,
   } = props;
 
@@ -135,7 +134,7 @@ const TranscriptPage = (props) => {
                       type="file"
                       margin="normal"
                       variant="outlined"
-                      onChange={(e) => {props.setFieldValue("transcript", e.currentTarget.files[0])}}
+                      onChange={(e) => { props.setFieldValue("transcript", e.currentTarget.files[0]) }}
                       helperText={touched.transcript ? errors.transcript : ""}
                       error={touched.transcript && Boolean(errors.transcript)}
                       className={classes.textField}

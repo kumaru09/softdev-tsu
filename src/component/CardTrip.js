@@ -5,51 +5,51 @@ import FavoriteIcon from '@material-ui/icons/Favorite'
 import { red } from '@material-ui/core/colors';
 
 const useStyles = makeStyles((theme) => ({
-    root: {
+  root: {
     maxWidth: '18rem',
-    },
-    avatar: {
-        backgroundColor: red[500],
-    },
-    media: {
-        height: 0,
-        paddingTop: '56.25%',
-    }
+  },
+  avatar: {
+    backgroundColor: red[500],
+  },
+  media: {
+    height: 0,
+    paddingTop: '56.25%',
+  }
 }))
 
-export default function CardTrip (){
-    const classes = useStyles();
+export default function CardTrip() {
+  const classes = useStyles();
 
-    return(
-        <Grid item xs={12} sm={6} md={4}>
-        <Card>
-        <CardHeader 
-            avatar= {
-                <Avatar aria-label="trip" className={classes.avatar}>
-                    S
+  return (
+    <Grid item xs={12} sm={6} md={4}>
+      <Card>
+        <CardHeader
+          avatar={
+            <Avatar aria-label="trip" className={classes.avatar}>
+              S
                 </Avatar>
-            }
-            title="Kumamama12"
-            subheader="April 20, 2020"
+          }
+          title="Kumamama12"
+          subheader="April 20, 2020"
         />
         <CardMedia
-            className={classes.media}
-            image="https://placekitten.com/600/750"
+          className={classes.media}
+          image="https://placekitten.com/600/750"
         />
         <CardContent>
-            <Typography variant="body2" color="textSecondary" component="p">
-                A kitten is really very cute so much, I'd like to hug them
+          <Typography variant="body2" color="textSecondary" component="p">
+            A kitten is really very cute so much, I'd like to hug them
             </Typography>
         </CardContent>
         <CardActions disableSpacing>
-            <IconButton aria-label="add to favorites">
-                <FavoriteIcon />
-            </IconButton>
-            <Box ml="auto">
+          <IconButton aria-label="add to favorites">
+            <FavoriteIcon />
+          </IconButton>
+          <Box ml="auto">
             <Button size="small" color="primary">Read More</Button>
-            </Box>
+          </Box>
         </CardActions>
-        </Card>
-        </Grid>
-    )
+      </Card>
+    </Grid>
+  )
 }

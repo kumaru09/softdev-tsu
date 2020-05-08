@@ -120,7 +120,6 @@ const TourForm = (props) => {
     handleChange,
     handleBlur,
     handleSubmit,
-    handleReset,
   } = props;
 
   return (
@@ -142,7 +141,7 @@ const TourForm = (props) => {
                     placeholder="Picture:"
                     type="file"
                     variant="outlined"
-                    onChange={(e) => {props.setFieldValue("picture", e.currentTarget.files[0])}}
+                    onChange={(e) => { props.setFieldValue("picture", e.currentTarget.files[0]) }}
                     error={touched.picture && errors.picture ? true : false}
                   />
                   {errors.picture && touched.picture && (
@@ -155,8 +154,8 @@ const TourForm = (props) => {
                     name="tourname"
                     label="ชื่อทัวร์"
                     value={values.tourname}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
                     error={touched.tourname && errors.tourname ? true : false}
                     fullWidth
                   />
@@ -188,13 +187,13 @@ const TourForm = (props) => {
                   </FormControl>
                 </Grid>
                 <Grid item xs={12}>
-                <Autocomplete
+                  <Autocomplete
                     multiple
                     fullWidth
                     freeSolo
                     defaultValue={[]}
                     options={topdestination.map((option) => option.place)}
-                    onChange={( _,value) => props.setFieldValue("destination", value)}
+                    onChange={(_, value) => props.setFieldValue("destination", value)}
                     name="destination"
                     renderTags={(value, getTagProps) =>
                       value.map((option, index) => (
@@ -237,19 +236,19 @@ const TourForm = (props) => {
                   )}
                 </Grid>
                 <Grid item xs={12} md={6}>
-                      <TextField
-                        fullWidth
-                        id="price"
-                        name="price"
-                        label="ค่าใช้จ่าย"
-                        value={values.price}
-                        onChange={handleChange}
-                        error={touched.price && errors.price ? true : false}
-                        helperText="ถ้าไม่มีค่าใช้จ่ายใส่ 0"
-                      />
+                  <TextField
+                    fullWidth
+                    id="price"
+                    name="price"
+                    label="ค่าใช้จ่าย"
+                    value={values.price}
+                    onChange={handleChange}
+                    error={touched.price && errors.price ? true : false}
+                    helperText="ถ้าไม่มีค่าใช้จ่ายใส่ 0"
+                  />
                   {touched.price && errors.price && (
-                        <p className={classes.errorMessage}>{errors.price}</p>
-                      )}
+                    <p className={classes.errorMessage}>{errors.price}</p>
+                  )}
                 </Grid>
                 <MuiPickersUtilsProvider
                   libInstance={moment}
@@ -360,8 +359,8 @@ const form = withFormik({
       .string()
       .required("This field is required")
       .min(5, "Please enter at least 5 characters")
-	    .max(200, "Please Enter less then 200 letters"),
-	  
+      .max(200, "Please Enter less then 200 letters"),
+
     price: yup
       .string()
       .required("This field is required")
@@ -377,10 +376,10 @@ const form = withFormik({
       .string()
       .required("This field is required")
       .min(10, "Please enter at least 10 characters")
-	    .max(1000, "Please Enter less then 1000 letters"),
+      .max(1000, "Please Enter less then 1000 letters"),
     category: yup.string().required("This field is required"),
     startDate: yup.date().required("This field is required").nullable(),
-    endDate: yup.date().min(yup.ref('startDate'),"วันเวลาจบต้องมากกว่าวันเวลาเริ่ม").required("This field is required").nullable(),
+    endDate: yup.date().min(yup.ref('startDate'), "วันเวลาจบต้องมากกว่าวันเวลาเริ่ม").required("This field is required").nullable(),
     picture: yup.string().required("This field is required"),
     destination: yup.string().required("This field is required"),
   }),
@@ -390,27 +389,27 @@ const form = withFormik({
     setFieldValue(values);
     const destinationID = []
     await values.destination.forEach((value) => {
-        Axios.get(`https://api.19991999.xyz/places/?name=${value}`, {headers: authHeader()})
+      Axios.get(`https://api.19991999.xyz/places/?name=${value}`, { headers: authHeader() })
         .then(res => {
           if (res.data === null) {
-            Axios.post('https://api.19991999.xyz/places/', { name: value, lat: 0, lon: 0 }, {headers: authHeader()})
-            .then(res => {
-              console.log(res.data)
-              destinationID.push(res.data.id)
-              console.log(destinationID)
-            })
-            .catch(err => {
-              console.log(err)
-            })
+            Axios.post('https://api.19991999.xyz/places/', { name: value, lat: 0, lon: 0 }, { headers: authHeader() })
+              .then(res => {
+                console.log(res.data)
+                destinationID.push(res.data.id)
+                console.log(destinationID)
+              })
+              .catch(err => {
+                console.log(err)
+              })
           }
           else {
             destinationID.push(res.data[0].id)
             console.log(destinationID)
           }
-          
+
         })
         .then(() => {
-            props.dispatch(addTour(values, destinationID))
+          props.dispatch(addTour(values, destinationID))
         })
         .catch(err => {
           console.log(err)

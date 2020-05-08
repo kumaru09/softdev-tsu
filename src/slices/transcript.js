@@ -46,7 +46,7 @@ export function fetchTranscript(id) {
       headers: authHeader(),
     })
       .then((res) => {
-          console.log(res)
+        console.log(res)
         dispatch(getTranscriptSuccess(res.data));
       })
       .catch((err) => {
@@ -64,9 +64,9 @@ export function fetchAllTranscript() {
       headers: authHeader(),
     })
       .then((res) => {
-          console.log(res.data)
-          if (res.data === null) dispatch(getTranscriptSuccess([]))
-          else dispatch(getTranscriptSuccess(res.data))
+        console.log(res.data)
+        if (res.data === null) dispatch(getTranscriptSuccess([]))
+        else dispatch(getTranscriptSuccess(res.data))
       })
       .catch((err) => {
         console.log(err);
@@ -76,18 +76,18 @@ export function fetchAllTranscript() {
 }
 
 export function fetchTourTranscript(id) {
-    return async (dispatch) => {
-      dispatch(getTranscript());
-  
-      Axios.get(`https://api.19991999.xyz/tours/${id}/transcripts`, {
-        headers: authHeader(),
+  return async (dispatch) => {
+    dispatch(getTranscript());
+
+    Axios.get(`https://api.19991999.xyz/tours/${id}/transcripts`, {
+      headers: authHeader(),
+    })
+      .then((res) => {
+        dispatch(getTranscriptSuccess(res.data));
       })
-        .then((res) => {
-          dispatch(getTranscriptSuccess(res.data));
-        })
-        .catch((err) => {
-          console.log(err);
-          dispatch(getTranscriptFailure());
-        });
-    };
-  }
+      .catch((err) => {
+        console.log(err);
+        dispatch(getTranscriptFailure());
+      });
+  };
+}

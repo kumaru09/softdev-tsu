@@ -2,12 +2,12 @@ import React from 'react'
 import { Container } from '@material-ui/core'
 
 const ReviewPage = () => {
-    return (
-        <Container maxWidth="md">
+  return (
+    <Container maxWidth="md">
 
-        </Container>
+    </Container>
 
-    )
+  )
 }
 
 export default ReviewPage

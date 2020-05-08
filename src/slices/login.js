@@ -5,34 +5,34 @@ import Axios from 'axios'
 let user = JSON.parse(localStorage.getItem('user'))
 
 export const initialState = user ? {
-    loggingin: false,
-    isAuth: true,
-    user
+  loggingin: false,
+  isAuth: true,
+  user
 } : {}
 
 const loginSlice = createSlice({
-    name: 'login',
-    initialState,
-    reducers: {
-        LOGIN_REQUEST: (state, { payload }) => {
-            state.loggingin = true
-            state.user = payload
-        },
-        LOGIN_SUCCESS: (state, { payload }) => {
-            state.loggingin = false
-            state.isAuth = true
-            state.user = payload
-            state.hasErrors = false
-        },
-        LOGIN_FAILURE: state => {
-            state.loggingin = false
-            state.hasErrors = true
-        },
-        LOGOUT: state => {
-            state.isAuth = false
-            state.user = ""
-        }
+  name: 'login',
+  initialState,
+  reducers: {
+    LOGIN_REQUEST: (state, { payload }) => {
+      state.loggingin = true
+      state.user = payload
+    },
+    LOGIN_SUCCESS: (state, { payload }) => {
+      state.loggingin = false
+      state.isAuth = true
+      state.user = payload
+      state.hasErrors = false
+    },
+    LOGIN_FAILURE: state => {
+      state.loggingin = false
+      state.hasErrors = true
+    },
+    LOGOUT: state => {
+      state.isAuth = false
+      state.user = ""
     }
+  }
 })
 
 export const { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, LOGOUT } = loginSlice.actions
@@ -41,26 +41,26 @@ export default loginSlice.reducer
 
 export function login(username, password) {
 
-    return async dispatch => {
-        dispatch(LOGIN_REQUEST(username))
+  return async dispatch => {
+    dispatch(LOGIN_REQUEST(username))
 
-        Axios.post('https://api.19991999.xyz/login',{username: username, password: password})
-        .then(res => {
-            console.log(JSON.stringify(res.data))
-            localStorage.setItem('user',JSON.stringify(res.data))
-            dispatch(LOGIN_SUCCESS(res.data))
-            history.push('/')
-        })
-        .catch(err => {
-            console.log(err)
-            dispatch(LOGIN_FAILURE())
-        })
-    }
+    Axios.post('https://api.19991999.xyz/login', { username: username, password: password })
+      .then(res => {
+        console.log(JSON.stringify(res.data))
+        localStorage.setItem('user', JSON.stringify(res.data))
+        dispatch(LOGIN_SUCCESS(res.data))
+        history.push('/')
+      })
+      .catch(err => {
+        console.log(err)
+        dispatch(LOGIN_FAILURE())
+      })
+  }
 }
 
-export function logout () {
-    return async dispatch => {
-        localStorage.removeItem('user')
-        dispatch(LOGOUT())
-    }
+export function logout() {
+  return async dispatch => {
+    localStorage.removeItem('user')
+    dispatch(LOGOUT())
+  }
 }

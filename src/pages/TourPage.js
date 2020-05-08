@@ -139,16 +139,16 @@ const TourPage = ({ match }) => {
   }
 
   async function addReview(input, value) {
-    let {id} = match.params
-    Axios.post(`https://api.19991999.xyz/reviews/${id}`,{comment: input, ratting: value*20},{headers: authHeader()})
-    .then(res => {
-      console.log(res)
-      dispatch(fetchComments(id));
-      dispatch(fetchReview(id))
-    })
-    .catch(err => {
-      console.log(err)
-    })
+    let { id } = match.params
+    Axios.post(`https://api.19991999.xyz/reviews/${id}`, { comment: input, ratting: value * 20 }, { headers: authHeader() })
+      .then(res => {
+        console.log(res)
+        dispatch(fetchComments(id));
+        dispatch(fetchReview(id))
+      })
+      .catch(err => {
+        console.log(err)
+      })
   }
 
   const ownerTour = () => {
@@ -176,7 +176,7 @@ const TourPage = ({ match }) => {
           </Grid>
           <Grid item>
             {ownerTour() ? (
-              
+
               <Button
                 disabled={favoriteState}
                 fullWidth
@@ -189,16 +189,16 @@ const TourPage = ({ match }) => {
                 {favoriteState ? "ถูกใจแล้ว" : "ถูกใจ"}
               </Button>
             ) : (
-              <Button
-                startIcon={<EditIcon />}
-                fullWidth
-                variant="outlined"
-                component={Link}
-                to={`/edittour?tour=${tour.id}`}
-              >
-                แก้ไข
-              </Button>
-            )}
+                <Button
+                  startIcon={<EditIcon />}
+                  fullWidth
+                  variant="outlined"
+                  component={Link}
+                  to={`/edittour?tour=${tour.id}`}
+                >
+                  แก้ไข
+                </Button>
+              )}
           </Grid>
         </Grid>
         <Grid container spacing={1}>
@@ -230,8 +230,8 @@ const TourPage = ({ match }) => {
                     <Avatar alt="">{tour.g_name && tour.g_name[0]}</Avatar>
                   </ListItemAvatar>
                   <ListItemText
-                    primary={tour.g_name+" "+tour.g_surname}
-                   />
+                    primary={tour.g_name + " " + tour.g_surname}
+                  />
                 </ListItem>
               </List>
             </Grid>
@@ -253,10 +253,10 @@ const TourPage = ({ match }) => {
                   placeholder="พิมพ์รีวิว.."
                   id="sendicon"
                   value={input}
-                  onChange={(e) => {setInput(e.target.value)}}
+                  onChange={(e) => { setInput(e.target.value) }}
                   endAdornment={
                     <InputAdornment position="end">
-                      <IconButton onClick={() => {addReview(input, value)}}>
+                      <IconButton onClick={() => { addReview(input, value) }}>
                         <SendIcon />
                       </IconButton>
                     </InputAdornment>
@@ -264,18 +264,18 @@ const TourPage = ({ match }) => {
                 />
               </FormControl><Typography variant="subtitle1">{"คะแนน: "}</Typography>
               <Box component="fieldset" mb={3} borderColor="transparent">
-              <Rating
-                name="simple-controlled"
-                value={value}
-                onChange={(event, newValue) => {
-                  setValue(newValue);
-                }}
-              />
+                <Rating
+                  name="simple-controlled"
+                  value={value}
+                  onChange={(event, newValue) => {
+                    setValue(newValue);
+                  }}
+                />
               </Box>
             </Grid>
           ) : (
-            ""
-          )}
+              ""
+            )}
         </Grid>
       </Container>
     </Fragment>

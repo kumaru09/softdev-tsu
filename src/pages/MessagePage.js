@@ -62,14 +62,14 @@ const MessagePage = ({ match, location }) => {
 
   async function addMessage(input) {
     let { contact } = match.params;
-    Axios.post(`https://api.19991999.xyz/messages/${contact}`,{ message: input},{headers: authHeader()})
-    .then(res => {
-      console.log(res)
-      dispatch(fetchMessage(contact));
-    })
-    .catch(err => {
-      console.log(err)
-    })
+    Axios.post(`https://api.19991999.xyz/messages/${contact}`, { message: input }, { headers: authHeader() })
+      .then(res => {
+        console.log(res)
+        dispatch(fetchMessage(contact));
+      })
+      .catch(err => {
+        console.log(err)
+      })
   }
 
   return (
@@ -84,24 +84,24 @@ const MessagePage = ({ match, location }) => {
             />
           </Grid>
           <Grid item xs>
-          <CardContent>
-            <Grid container direction="column-reverse">
-            {renderMessage()}</Grid></CardContent>
+            <CardContent>
+              <Grid container direction="column-reverse">
+                {renderMessage()}</Grid></CardContent>
           </Grid>
           <Grid item xs={12}>
             <Divider variant="fullWidth" />
             <CardActions>
               <FormControl fullWidth variant="outlined">
                 <OutlinedInput
-                    placeholder="พิมพ์ข้อความ.."
+                  placeholder="พิมพ์ข้อความ.."
                   id="sendicon"
                   value={input}
-                  onChange={(e) => {setInput(e.target.value)}}
+                  onChange={(e) => { setInput(e.target.value) }}
                   endAdornment={
                     <InputAdornment position="end">
-                    <IconButton onClick={() => addMessage(input)}>
-                      <SendIcon />
-                    </IconButton>
+                      <IconButton onClick={() => addMessage(input)}>
+                        <SendIcon />
+                      </IconButton>
                     </InputAdornment>
                   }
                 />

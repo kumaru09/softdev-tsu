@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import Axios from 'axios'
-import {authHeader} from '../helpers/auth-header';
+import { authHeader } from '../helpers/auth-header';
 
 export const initialState = {
   loading: false,
@@ -17,7 +17,7 @@ const favoriteSlice = createSlice({
       state.loading = true
       state.favorite = false
     },
-    getFavoriteSuccess: (state, {payload}) => {
+    getFavoriteSuccess: (state, { payload }) => {
       state.favorite = true
       state.loading = false
       state.favorites = payload
@@ -38,21 +38,21 @@ export function fetchFavorite(id) {
     console.log(id)
 
     Axios.get(`https://api.19991999.xyz/favorites/${id}`, { headers: authHeader() })
-    .then(res => {
-      dispatch(getFavoriteSuccess())
-    })
-    .catch(err => {
-      console.log(err)
-      dispatch(getFavoriteFailure())
-    })
+      .then(res => {
+        dispatch(getFavoriteSuccess())
+      })
+      .catch(err => {
+        console.log(err)
+        dispatch(getFavoriteFailure())
+      })
   }
 }
 
 export function fetchAllFavorite() {
-    return async dispatch => {
-      dispatch(getFavorite())
-  
-      Axios.get('https://api.19991999.xyz/favorites/', { headers: authHeader() })
+  return async dispatch => {
+    dispatch(getFavorite())
+
+    Axios.get('https://api.19991999.xyz/favorites/', { headers: authHeader() })
       .then(res => {
         console.log(res.data)
         dispatch(getFavoriteSuccess(res.data))
@@ -61,5 +61,5 @@ export function fetchAllFavorite() {
         console.log(err)
         dispatch(getFavoriteFailure())
       })
-    }
   }
+}

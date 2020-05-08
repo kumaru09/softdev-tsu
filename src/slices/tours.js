@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
 import Axios from 'axios'
-import { history } from '../helpers/history'
 
 export const initialState = {
   loading: false,
@@ -36,13 +35,13 @@ export function searchTours(input) {
     dispatch(getTours())
 
     Axios.get(`https://api.19991999.xyz/tours${input}`)
-    .then(res => {
+      .then(res => {
         console.log(res.data)
         dispatch(getToursSuccess(res.data))
-    })
-    .catch(err => {
+      })
+      .catch(err => {
         console.log(err)
         dispatch(getToursFailure())
-    })
+      })
   }
 }

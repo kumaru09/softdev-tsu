@@ -12,14 +12,14 @@ import { Link } from "react-router-dom";
 
 export const Messages = ({ message }) => (
   <Fragment>
-    <ListItem alignItems="flex-start" component={Link} to={`/messages/${message.contact}?name=${message.name}`} style={{color: '#000'}}>
+    <ListItem alignItems="flex-start" component={Link} to={`/messages/${message.contact}?name=${message.name}`} style={{ color: '#000' }}>
       <ListItemAvatar>
         <Avatar alt="">{message.name[0]}</Avatar>
       </ListItemAvatar>
       <ListItemText
         primary={
           <Fragment>
-            {message.name+" "}
+            {message.name + " "}
             <Typography component="span" variant="caption">
               {moment(message.time).utc().calendar()}
             </Typography>
@@ -27,10 +27,10 @@ export const Messages = ({ message }) => (
         }
         secondary={
           <Fragment>
-          {message.me && "คุณ: "}
-          <Typography component="span" variant="body1" color="textPrimary">
-            {message.message}
-          </Typography>
+            {message.me && "คุณ: "}
+            <Typography component="span" variant="body1" color="textPrimary">
+              {message.message}
+            </Typography>
           </Fragment>
         }
       />

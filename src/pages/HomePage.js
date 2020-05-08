@@ -102,7 +102,7 @@ const HomePage = () => {
     dispatch(searchTours("?order=id&desc=true"));
   }, [dispatch]);
 
-  const{ tours, loading, hasErrors }= useSelector(toursSelector);
+  const { tours, loading, hasErrors } = useSelector(toursSelector);
 
   const renderTours = () => {
     if (loading) return <Typography>กำลังโหลดข้อมูล...</Typography>
@@ -157,43 +157,43 @@ const HomePage = () => {
             </Paper>
           </Grid>
         </Grid>
-        </Container>
-        <Container maxWidth="md">
-          <Card component="div" className={classes.root}>
-            <AppBar position="static">
-              <Tabs
-                value={value}
-                onChange={handleChange}
-                aria-label="simple tabs example"
-              >
-                <Tab onClick={() => tabTour("?order=id&desc=true")} label="ทัวร์ล่าสุด" {...allyProps(0)} />
-                <Tab onClick={() => tabTour("?order=favorite&desc=true")} label="ทัวร์ยอดนิยม" {...allyProps(1)} />
-                <Tab onClick={() => tabTour("?order=confirm&desc=true")} label="ทัวร์ฮิต" {...allyProps(2)} />
-              </Tabs>
-            </AppBar>
-            <TabPanel value={value} index={0}>
+      </Container>
+      <Container maxWidth="md">
+        <Card component="div" className={classes.root}>
+          <AppBar position="static">
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              aria-label="simple tabs example"
+            >
+              <Tab onClick={() => tabTour("?order=id&desc=true")} label="ทัวร์ล่าสุด" {...allyProps(0)} />
+              <Tab onClick={() => tabTour("?order=favorite&desc=true")} label="ทัวร์ยอดนิยม" {...allyProps(1)} />
+              <Tab onClick={() => tabTour("?order=confirm&desc=true")} label="ทัวร์ฮิต" {...allyProps(2)} />
+            </Tabs>
+          </AppBar>
+          <TabPanel value={value} index={0}>
             <CardContent>
-                  <List>
-                  {renderTours()}
-                  </List>
+              <List>
+                {renderTours()}
+              </List>
             </CardContent>
-            </TabPanel>
-            <TabPanel value={value} index={1}>
+          </TabPanel>
+          <TabPanel value={value} index={1}>
             <CardContent>
-                  <List>
-                  {renderTours()}
-                  </List>
+              <List>
+                {renderTours()}
+              </List>
             </CardContent>
-            </TabPanel>
-            <TabPanel value={value} index={2}>
+          </TabPanel>
+          <TabPanel value={value} index={2}>
             <CardContent>
-                  <List>
-                  {renderTours()}
-                  </List>
+              <List>
+                {renderTours()}
+              </List>
             </CardContent>
-            </TabPanel>
-          </Card>
-        </Container>
+          </TabPanel>
+        </Card>
+      </Container>
     </div>
   );
 };

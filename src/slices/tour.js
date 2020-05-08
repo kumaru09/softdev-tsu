@@ -35,12 +35,12 @@ export function fetchTour(id) {
     dispatch(getTour())
 
     Axios.get(`https://api.19991999.xyz/tours/${id}`)
-    .then(res => {
-      dispatch(getTourSuccess(res.data))
-    })
-    .catch(err => {
-      console.log(err)
-      dispatch(getTourFailure())
-    })
+      .then(res => {
+        dispatch(getTourSuccess(res.data))
+      })
+      .catch(err => {
+        console.log(err)
+        dispatch(getTourFailure())
+      })
   }
 }
