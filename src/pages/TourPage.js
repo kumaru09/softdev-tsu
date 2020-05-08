@@ -35,6 +35,7 @@ import SendIcon from "@material-ui/icons/Send";
 import { fetchReview } from "../slices/review";
 import Rating from "@material-ui/lab/Rating";
 import Axios from "axios";
+import { history } from '../helpers/history';
 
 const useStyles = makeStyles((theme) => ({
   img: {
@@ -191,7 +192,8 @@ const TourPage = ({ match }) => {
                   fullWidth
                   startIcon={<FavoriteBorderIcon />}
                   onClick={() => {
-                    addFavor();
+                    if (localStorage.getItem("user") === null) history.push('/login')
+                    else addFavor()
                   }}
                   variant="outlined"
                 >
