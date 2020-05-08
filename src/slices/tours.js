@@ -33,8 +33,9 @@ export default toursSlice.reducer
 export function searchTours(input) {
   return async dispatch => {
     dispatch(getTours())
-
-    Axios.get(`https://api.19991999.xyz/tours${input}`)
+    Axios.get(`https://api.19991999.xyz/tours`, {
+      params: input
+    })
       .then(res => {
         console.log(res.data)
         dispatch(getToursSuccess(res.data))

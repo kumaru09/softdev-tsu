@@ -23,6 +23,7 @@ import { Link } from "react-router-dom";
 import { searchTours, toursSelector } from "../slices/tours";
 
 const tourCategory = [
+  { value: null, label: "All" },
   {
     value: "history",
     label: "History",
@@ -57,13 +58,13 @@ const ToursPage = ({ location }) => {
   const { tours, loading, hasErrors } = useSelector(toursSelector);
   const dispatch = useDispatch();
   const [input, setInput] = useState("");
+  const [inputCat, setInputCat] = useState("");
   const search = new URLSearchParams(location.search).get("search");
+  const category = new URLSearchParams(location.search).get("category");
 
   useEffect(() => {
-    let search = new URLSearchParams(location.search).get("search");
-
-    dispatch(searchTours(`?search=${search}`));
-  }, [dispatch, location]);
+    dispatch(searchTours({ search, category }));
+  }, [dispatch, location, search, category]);
 
   const renderSeacrh = () => {
     if (loading) return <Typography>กำลังโหลดข้อมูล...</Typography>
@@ -91,7 +92,7 @@ const ToursPage = ({ location }) => {
             <Select
               label="category"
               onChange={(event) => {
-                setInput(event.target.value);
+                setInputCat(event.target.value);
               }}
             >
               {tourCategory.map((option) => (
@@ -105,7 +106,7 @@ const ToursPage = ({ location }) => {
             color="secondary"
             variant="contained"
             component={Link}
-            to={`/tours?search=${input}`}
+            to={`/tours?${input ? "search=" + input : ""}${input && inputCat ? "&" : ""}${inputCat ? "category=" + inputCat : ""}`}
           >
             ค้นหา
           </Button>
