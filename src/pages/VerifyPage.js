@@ -3,6 +3,9 @@ import { withFormik } from "formik";
 import * as yup from "yup";
 import { makeStyles } from "@material-ui/core/styles";
 import { TextField, Grid, Button, Container } from "@material-ui/core";
+import Axios from "axios";
+import { authHeader } from "../helpers/auth-header";
+import { history } from "../helpers/history";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -138,28 +141,28 @@ const VerifyPage = (props) => {
                   <Grid item xs={12} md={12}>
                     <div className={classes.header}>ชื่อธนาคาร:</div>
                     <TextField
-                      id="identityNo"
+                      id="bankname"
                       label="ชื่อธนาคาร"
                       margin="normal"
                       variant="outlined"
-                      values={values.identityNo}
+                      values={values.bankname}
                       onChange={handleChange}
-                      helperText={touched.identityNo ? errors.identityNo : ""}
-                      error={touched.identityNo && Boolean(errors.identityNo)}
+                      helperText={touched.bankname ? errors.bankname : ""}
+                      error={touched.bankname&& Boolean(errors.bankname)}
                       className={classes.textField}
                     />
                   </Grid>
                   <Grid item xs={12} md={12}>
                     <div className={classes.header}>เลขบัญชีธนาคาร:</div>
                     <TextField
-                      id="identityNo"
+                      id="aacno"
                       label="เลขบัญชีธนาคาร"
                       margin="normal"
                       variant="outlined"
-                      values={values.identityNo}
+                      values={values.accno}
                       onChange={handleChange}
-                      helperText={touched.identityNo ? errors.identityNo : ""}
-                      error={touched.identityNo && Boolean(errors.identityNo)}
+                      helperText={touched.accno ? errors.accno : ""}
+                      error={touched.accno && Boolean(errors.accno)}
                       className={classes.textField}
                     />
                   </Grid>
@@ -190,10 +193,12 @@ const VerifyPage = (props) => {
 };
 const checkNumberOnly = /^[0-9]+$/;
 const verifyForm = withFormik({
-  mapPropsToValues: ({ identityNo, identityPic }) => {
+  mapPropsToValues: ({ identityNo, identityPic, bankname, accno }) => {
     return {
       identityNo: identityNo || "",
       identityPic: identityPic || "",
+      bankname: bankname || "",
+      accno: accno || "",
     };
   },
   validationSchema: yup.object().shape({
@@ -203,11 +208,22 @@ const verifyForm = withFormik({
       .matches(checkNumberOnly, "Please enter only number")
       .length(13, "Please enter 13 digit"),
     identityPic: yup.string().required("This field is required"),
+    bankname: yup.string().required("This field is required"),
+    accno: yup
+    .string()
+    .required("This field is required")
+    .matches(checkNumberOnly, "Please enter only number")
+    .length(10, "Please enter 10 digit"),
+
   }),
 
   handleSubmit: (values, { setFieldValue, setSubmitting }) => {
     setSubmitting(true);
     setFieldValue(values);
+    Axios.put('https://api.19991999.xyz/members/',{ verify: true },{ headers: authHeader() })
+    .then(res => {
+      history.push('/create')
+    })
   },
 })(VerifyPage);
 
