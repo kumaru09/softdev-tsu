@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 const Transcripts = props => {
   return (
     <Fragment>
-      <ListItem>
+      <ListItem component={Link} to={`/tours/${props.transcript.tour}`} style={{ color: '#000' }}>
         <ListItemText
           primary={props.transcript.name}
           secondary={<Fragment>
