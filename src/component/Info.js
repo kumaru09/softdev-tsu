@@ -66,18 +66,28 @@ const Info = ({ tour, addTran, ownerTour }) => {
       </CardContent>
       <CardActions>
         {ownerTour() ?
+          <Button color="secondary" component={Link} fullWidth variant="contained" to={`/tours/${tour.id}/transcript`}>รายการแจ้งโอนเงิน</Button>
+          :
           <Fragment>
-            {!hasTranscript && (tour.max_member !== tour.confirm) ? <Button color="secondary" fullWidth variant="contained" onClick={() => {
-              if (localStorage.getItem("user") === null) history.push('/login')
-              else addTran()
-            }}>เข้าร่วมทัวร์</Button> : ""}
-            {!hasTranscript && (tour.max_member === tour.confirm) ? <Button disabled color="secondary" fullWidth variant="contained">{"ทัวร์เต็ม"}</Button> : ""}
-            {hasTranscript && !transcript.confirm && !transcript.time ? <Button color="secondary" component={Link} to={`/createtranscript?tour=${transcript.tour}`} fullWidth variant="contained">แจ้งโอนเงิน</Button> : ""}
-            {hasTranscript && !transcript.confirm && moment(transcript.time).unix() === 0 ? <Button color="secondary" component={Link} to={`/createtranscript?tour=${transcript.tour}`} fullWidth variant="contained">กรุณาแจ้งโอนเงินอีกครั้ง</Button> : ""}
-            {hasTranscript && transcript.time && moment(transcript.time).unix() !== 0 && !transcript.confirm ? <Button disabled color="secondary" fullWidth variant="contained">{"รอการตรวจสอบ"}</Button> : ""}
-            {hasTranscript && transcript.confirm ? <Button disabled color="secondary" fullWidth variant="contained">{"เข้าร่วมเรียบร้อย"}</Button> : ""}</Fragment>
-          : <Button color="secondary" component={Link} fullWidth variant="contained" to={`/tours/${tour.id}/transcript`}>รายการแจ้งโอนเงิน</Button>}</CardActions>
-      {ownerTour() ? <CardActions>
+            {!hasTranscript && (tour.max_member !== tour.confirm) ?
+              <Button color="secondary" fullWidth variant="contained" onClick={() => {
+                if (localStorage.getItem("user") === null) history.push('/login')
+                else addTran()
+              }}>เข้าร่วมทัวร์</Button> : ""}
+            {!hasTranscript && (tour.max_member === tour.confirm) ?
+              <Button disabled color="secondary" fullWidth variant="contained">{"ทัวร์เต็ม"}</Button> : ""}
+            {hasTranscript && !transcript.confirm && !transcript.time ?
+              <Button color="secondary" component={Link} to={`/createtranscript?tour=${transcript.tour}`} fullWidth variant="contained">แจ้งโอนเงิน</Button> : ""}
+            {hasTranscript && !transcript.confirm && moment(transcript.time).unix() === 0 ?
+              <Button color="secondary" component={Link} to={`/createtranscript?tour=${transcript.tour}`} fullWidth variant="contained">กรุณาแจ้งโอนเงินอีกครั้ง</Button> : ""}
+            {hasTranscript && transcript.time && moment(transcript.time).unix() !== 0 && !transcript.confirm ?
+              <Button disabled color="secondary" fullWidth variant="contained">{"รอการตรวจสอบ"}</Button> : ""}
+            {hasTranscript && transcript.confirm ?
+              <Button disabled color="secondary" fullWidth variant="contained">{"เข้าร่วมเรียบร้อย"}</Button> : ""}
+          </Fragment>
+        }
+      </CardActions>
+      {!ownerTour() ? <CardActions>
         <Button color="secondary" component={Link} to={`/messages/${tour.owner}?name=${tour.g_name}`} fullWidth variant="outlined">ติดต่อสอบถาม</Button>
       </CardActions> : ""}
     </Fragment>

@@ -152,11 +152,11 @@ const TourPage = ({ match }) => {
   }
 
   const ownerTour = () => {
-    if (localStorage.getItem("user") === null) return true
+    if (localStorage.getItem("user") === null) return false
     else {
       let user = JSON.parse(atob(localStorage.getItem("user").split(".")[1]));
-      if (user.user_id === tour.owner) return false;
-      else return true;
+      if (user.user_id === tour.owner) return true;
+      else return false;
     }
   };
 
@@ -176,27 +176,26 @@ const TourPage = ({ match }) => {
           </Grid>
           <Grid item>
             {ownerTour() ? (
-
               <Button
-                disabled={favoriteState}
+                startIcon={<EditIcon />}
                 fullWidth
-                startIcon={<FavoriteBorderIcon />}
-                onClick={() => {
-                  addFavor();
-                }}
                 variant="outlined"
+                component={Link}
+                to={`/edittour?tour=${tour.id}`}
               >
-                {favoriteState ? "ถูกใจแล้ว" : "ถูกใจ"}
+                แก้ไข
               </Button>
             ) : (
                 <Button
-                  startIcon={<EditIcon />}
+                  disabled={favoriteState}
                   fullWidth
+                  startIcon={<FavoriteBorderIcon />}
+                  onClick={() => {
+                    addFavor();
+                  }}
                   variant="outlined"
-                  component={Link}
-                  to={`/edittour?tour=${tour.id}`}
                 >
-                  แก้ไข
+                  {favoriteState ? "ถูกใจแล้ว" : "ถูกใจ"}
                 </Button>
               )}
           </Grid>
@@ -246,7 +245,7 @@ const TourPage = ({ match }) => {
           <Grid item xs>
             <List>{renderComments()}</List>
           </Grid>
-          {(ownerTour() || !review) && transcripts.confirm ? (
+          {!(ownerTour() || review) && transcripts.confirm ? (
             <Grid item xs>
               <FormControl fullWidth variant="outlined">
                 <OutlinedInput
