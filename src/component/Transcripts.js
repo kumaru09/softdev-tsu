@@ -13,15 +13,15 @@ const Transcripts = props => {
         <ListItemText
           primary={props.transcript.name}
           secondary={<Fragment>
-            {props.transcript.time && moment(props.transcript.time).format() !== moment(0).format() && !props.transcript.confirm ?
+            {props.transcript.time && moment(props.transcript.time).unix() !== 0 && !props.transcript.confirm ?
               moment(props.transcript.time).format('L LT') + " อยู่ระหว่างการตวรจสอบ" : ""}
             {!props.transcript.time && "รอแจ้งโอนเงิน"}
             {props.transcript.time && props.transcript.confirm ? "เข้าร่วมเรียบร้อย" : ""}
-            {moment(props.transcript.time).format() === moment(0).format() && !props.transcript.confirm ? "กรุณาแจ้งโอนเงินอีกครั้ง" : ""}
+            {moment(props.transcript.time).unix() === 0 && !props.transcript.confirm ? "กรุณาแจ้งโอนเงินอีกครั้ง" : ""}
           </Fragment>}
         />
         <ListItemSecondaryAction>
-          {moment(props.transcript.time).format() === moment(0).format() && !props.transcript.confirm ? <IconButton edge="end" component={Link} to={`/tours/${props.transcript.tour}`} >
+          {moment(props.transcript.time).unix() === 0 && !props.transcript.confirm ? <IconButton edge="end" component={Link} to={`/tours/${props.transcript.tour}`} >
             <AddIcon />
           </IconButton> : ""}
           {!props.transcript.confirm && !props.transcript.time ?

@@ -29,15 +29,15 @@ const Transcripts = (props) => {
           secondary={
             <Fragment>
               {props.transcript.confirm ? "เข้าร่วมเรียบร้อย" : ""}
-              {moment(props.transcript.time).format() === moment(0).format() ||
-                !props.transcript.time
+              {!props.transcript.time
                 ? "รอการแจ้งโอน"
                 : ""}
-              {moment(props.transcript.time).format() !== moment(0).format() &&
+              {moment(props.transcript.time).unix() !== 0 &&
                 !props.transcript.confirm &&
                 props.transcript.time
                 ? moment(props.transcript.time).format("L LT")
                 : ""}
+              {moment(props.transcript.time).unix() === 0 && !props.transcript.confirm ? "รอการแจ้งโอนเงินอีกครั้ง" : ""}
             </Fragment>
           }
         />
@@ -45,7 +45,7 @@ const Transcripts = (props) => {
           <ListItemSecondaryAction>
             <IconButton disabled={
               !props.transcript.time ||
-              moment(props.transcript.time).format() === moment(0).format()
+              moment(props.transcript.time).unix() === 0
             }
               onClick={() => setOpen(true)}>
               <ImageIcon />
@@ -53,7 +53,7 @@ const Transcripts = (props) => {
             <IconButton
               disabled={
                 !props.transcript.time ||
-                moment(props.transcript.time).format() === moment(0).format()
+                moment(props.transcript.time).unix() === 0
               }
               edge="end"
               onClick={() => {
@@ -65,7 +65,7 @@ const Transcripts = (props) => {
             <IconButton
               disabled={
                 !props.transcript.time ||
-                moment(props.transcript.time).format() === moment(0).format()
+                moment(props.transcript.time).unix() === 0
               }
               edge="end"
               onClick={() => {
